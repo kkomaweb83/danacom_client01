@@ -110,8 +110,10 @@ public class MemComJoin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				id_chk = false;
 				String u_mem_id = t_mem_id.getText().trim();
+				
+				DanaComProtocol writePort = null;
+				DanaComProtocol readPort = null;
 				MemComVo memComWriteVo = null;
-				MemComVo memComReadVo = null;
 				
 				if("".equals(u_mem_id)){
 					JOptionPane.showMessageDialog(getParent(), "아이디 를 입력하세요!");
@@ -125,19 +127,23 @@ public class MemComJoin extends JFrame {
 						memComWriteVo.setCmd(200);
 						memComWriteVo.setMem_id(u_mem_id);
 						
-						oos.writeObject(memComWriteVo);
+						writePort = new DanaComProtocol();
+						writePort.setP_cmd(200);
+						writePort.setMemComVo(memComWriteVo);
+						
+						oos.writeObject(writePort);
 						oos.flush();
 						
 						ois = new ObjectInputStream(s.getInputStream());
-						memComReadVo = (MemComVo)ois.readObject();
+						readPort = (DanaComProtocol)ois.readObject();
 						
-						if(memComReadVo.getCmd() == 201){
+						if(readPort.getMemComVo().getCmd() == 201){
 							t_mem_id.requestFocus();
 						}else{
 							id_chk = true;
 							chk_id = u_mem_id;
 						}
-						JOptionPane.showMessageDialog(getParent(), memComReadVo.getMsg());
+						JOptionPane.showMessageDialog(getParent(), readPort.getMemComVo().getMsg());
 						
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -164,6 +170,8 @@ public class MemComJoin extends JFrame {
 				String u_mem_email = t_mem_email.getText().trim();
 				String u_mem_hp = t_mem_hp.getText().trim();
 				
+				DanaComProtocol writePort = null;
+				DanaComProtocol readPort = null;
 				MemComVo memComWriteVo = null;
 				MemComVo memComReadVo = null;
 				
@@ -189,14 +197,18 @@ public class MemComJoin extends JFrame {
 								memComWriteVo = new MemComVo(0,u_mem_id,u_mem_pass,u_mem_name,u_mem_email,u_mem_hp,1000,"","n");
 								memComWriteVo.setCmd(300);
 								
-								oos.writeObject(memComWriteVo);
+								writePort = new DanaComProtocol();
+								writePort.setP_cmd(300);
+								writePort.setMemComVo(memComWriteVo);
+								
+								oos.writeObject(writePort);
 								oos.flush();
 								
 								ois = new ObjectInputStream(s.getInputStream());
-								memComReadVo = (MemComVo)ois.readObject();
+								readPort = (DanaComProtocol)ois.readObject();
 								
-								JOptionPane.showMessageDialog(getParent(), memComReadVo.getMsg());
-								if(memComReadVo.getCmd() == 301){
+								JOptionPane.showMessageDialog(getParent(), readPort.getMemComVo().getMsg());
+								if(readPort.getMemComVo().getCmd() == 301){
 									dispose();
 								}
 								

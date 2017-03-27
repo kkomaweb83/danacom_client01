@@ -1,7 +1,6 @@
 package com.da.na;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class MemComVo implements Serializable {
 	public static final long serialVersionUID = 39391L;
@@ -17,7 +16,6 @@ public class MemComVo implements Serializable {
 	private String mem_admin_autho;
 	private String msg;
 	private int cmd;
-	private List<String> memComIdList;
 	
 	public MemComVo() {
 	}
@@ -114,21 +112,13 @@ public class MemComVo implements Serializable {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-
+	
 	public int getCmd() {
 		return cmd;
 	}
 
 	public void setCmd(int cmd) {
 		this.cmd = cmd;
-	}
-
-	public List<String> getMemComIdList() {
-		return memComIdList;
-	}
-
-	public void setMemComIdList(List<String> memComIdList) {
-		this.memComIdList = memComIdList;
 	}
 	
 }

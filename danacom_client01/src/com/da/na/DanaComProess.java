@@ -6,9 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -21,7 +18,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 
-public class DanaComProess extends JPanel implements Runnable {
+public class DanaComProess extends JPanel {
 	DanaComMain danaComMain;
 	
 	JPanel leftMenuPa, centerListPa;
@@ -35,10 +32,7 @@ public class DanaComProess extends JPanel implements Runnable {
 	JButton vblListLinkJb, vbbListLinkJb, btlListLinkJb, vbbChatLinkJb;
 	JList memComIdJL;
 	JScrollPane memComIdSrl;
-	
-	Socket s = null;
-	ObjectOutputStream oos = null;
-	ObjectInputStream ois = null;
+
 	
 	public DanaComProess() {
 	}
@@ -116,9 +110,9 @@ public class DanaComProess extends JPanel implements Runnable {
 				
 				// 소켓종료
 				try {
-					if(s != null) s.close();
-					if(ois != null) ois.close();
-					if(oos != null) oos.close();
+					if(danaComMain.s != null) danaComMain.s.close();
+					if(danaComMain.ois != null) danaComMain.ois.close();
+					if(danaComMain.oos != null) danaComMain.oos.close();
 				} catch (Exception e1) {
 					System.out.println("memComLogOutJb() : " + e1);
 					e1.printStackTrace();
@@ -128,59 +122,28 @@ public class DanaComProess extends JPanel implements Runnable {
 		
 	}
 	
-	@Override
-	public void run() {
-		MemComVo memComReadVo = null;
-		
-		try {
-			process : while(true){
-				memComReadVo = (MemComVo)ois.readObject();
-				
-				switch(memComReadVo.getCmd()){
-				case 2001:  // 접속회원 목록
-					List<String> memComIdList = memComReadVo.getMemComIdList();
-					if(memComIdList != null && memComIdList.size() > 0){
-						memComIdJL.setListData(memComIdList.toArray());
-					}
-					break;
-				case 9999:
-					break process;
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("run() : " + e);
-			e.printStackTrace();
-		}
-	}
-	
-	public void conn(){
-		try {
-			s = new Socket("localhost", 8888);
-			oos = new ObjectOutputStream(s.getOutputStream());
-			ois = new ObjectInputStream(s.getInputStream());
-			new Thread(DanaComProess.this).start();
-		} catch (Exception e2) {
-			System.out.println(e2);
-			e2.printStackTrace();
-		} 
-	}
-	
 	public void proessStart(MemComVo memComReadVo) {
-		MemComVo memComWriteVo = null;
+		DanaComProtocol writePort = null;
 		try{
-			conn();
+			writePort = new DanaComProtocol();
+			writePort.setP_cmd(2001);  // 견적서 메인화면 입장 2001 : 접속회원 목록조회
 			
-			memComWriteVo = new MemComVo();
-			memComWriteVo.setCmd(2001);  // 견적서 메인화면 입장 2001 : 접속회원 목록조회
-			
-			oos.writeObject(memComWriteVo);
-			oos.flush();
+			danaComMain.oos.writeObject(writePort);
+			danaComMain.oos.flush();
 			
 			memNameJl.setText(memComReadVo.getMem_name() + " 님");
 			memMilJl.setText("포인트 : " + memComReadVo.getMem_mil() + "점");
 		} catch (Exception e) {
 			System.out.println(e);
 			e.printStackTrace();
+		}
+	}
+	
+	// 접속 회원ID 목록
+	public void getMemComIdList(DanaComProtocol readPort){
+		List<String> memComIdList = readPort.getMemComIdList();
+		if(memComIdList != null && memComIdList.size() > 0){
+			memComIdJL.setListData(memComIdList.toArray());
 		}
 	}
 	

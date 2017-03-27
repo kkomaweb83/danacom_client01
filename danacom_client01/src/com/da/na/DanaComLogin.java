@@ -5,9 +5,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,10 +22,7 @@ public class DanaComLogin extends JPanel {
 	JTextField t_mem_id;
 	JPasswordField t_mem_pass;
 	JButton jbMemComAdd, jbMemComLogin;
-	
-	Socket s = null;
-	ObjectOutputStream oos = null;
-	ObjectInputStream ois = null;
+
 	
 	public DanaComLogin() {}
 	
@@ -82,9 +76,9 @@ public class DanaComLogin extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String u_mem_id = t_mem_id.getText().trim();
 				String u_mem_pass = new String(t_mem_pass.getPassword()).trim();
-				boolean idpw_chk = false;
+				
+				DanaComProtocol writePort = null;
 				MemComVo memComWriteVo = null;
-				MemComVo memComReadVo = null;
 				
 				if("".equals(u_mem_id)){
 					JOptionPane.showMessageDialog(getParent(), "ID 를 입력하세요!");
@@ -99,57 +93,50 @@ public class DanaComLogin extends JPanel {
 				}
 				
 				try {
-					s = new Socket("localhost", 8888);
-					oos = new ObjectOutputStream(s.getOutputStream());
-					
 					memComWriteVo = new MemComVo();
 					memComWriteVo.setCmd(100);
 					memComWriteVo.setMem_id(u_mem_id);
 					memComWriteVo.setMem_pass(u_mem_pass);
 					
-					oos.writeObject(memComWriteVo);
-					oos.flush();
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(100);
+					writePort.setMemComVo(memComWriteVo);
 					
-					ois = new ObjectInputStream(s.getInputStream());
-					
-					memComReadVo = (MemComVo)ois.readObject();
-					
-					if(memComReadVo.getCmd() == 101){
-						idpw_chk = true;
-					}else{
-						t_mem_id.setText("");
-						t_mem_pass.setText("");
-						t_mem_id.requestFocus();
-						JOptionPane.showMessageDialog(getParent(), memComReadVo.getMsg());
-						return;
-					}
-					
-					// 로그인 성공
-					if(idpw_chk){
-						t_mem_id.setText("");
-						t_mem_pass.setText("");
-						
-						// 견적서 메인화면 : 쓰레드 통신 시작
-						danaComMain.danaComProess.proessStart(memComReadVo);
-						
-						Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
-						danaComMain.setBounds(20, 20, 1300, 850);
-						
-						danaComMain.card.show(getParent(), "danaComProess");
-					}
+					danaComMain.conn(writePort);
 					
 				} catch (Exception e1) {
 					e1.printStackTrace();
-				} finally {
-					try {
-						if(s != null) s.close();
-						if(oos != null) oos.close();
-						if(ois != null) ois.close();
-					} catch (Exception e2) {
-						System.out.println(e2);
-					}
-				}
+				} 
 			}
 		});
+	}
+	
+	// 로그인 결과
+	public void loginResult(DanaComProtocol readPort){
+		boolean idpw_chk = false;
+		
+		if(readPort.getMemComVo().getCmd() == 101){
+			idpw_chk = true;
+		}else{
+			t_mem_id.setText("");
+			t_mem_pass.setText("");
+			t_mem_id.requestFocus();
+			JOptionPane.showMessageDialog(getParent(), readPort.getMemComVo().getMsg());
+			return;
+		}
+		
+		// 로그인 성공
+		if(idpw_chk){
+			t_mem_id.setText("");
+			t_mem_pass.setText("");
+			
+			// 견적서 메인화면
+			danaComMain.danaComProess.proessStart(readPort.getMemComVo());
+			
+			Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
+			danaComMain.setBounds(20, 20, 1300, 850);
+			
+			danaComMain.card.show(getParent(), "danaComProess");
+		}
 	}
 }
