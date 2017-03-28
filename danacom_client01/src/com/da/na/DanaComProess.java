@@ -1,12 +1,13 @@
 package com.da.na;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,24 +15,38 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 
 public class DanaComProess extends JPanel {
 	DanaComMain danaComMain;
 	
+	JPanel centerListCards;
+	CardLayout centerCardLayout;
+	DanaComVblPa danaComVblPa;
+	DanaComVbbPa danaComVbbPa;
+	DanaComVbjPa danaComVbjPa;
+	DanaComVbbChatPa danaComVbbChatPa;
+	
 	JPanel leftMenuPa, centerListPa;
 	JPanel memComInfoPa, menuListPa, memComJoinPa;
 	JLabel memNameJl, memMilJl;
 	JButton memComLogOutJb;
-	JPanel centerTopPa;
+	JPanel centerTopPa, centerBodyPa;
 	JLabel centerTitleJl;
 	TitledBorder leftMenuBd;
 	BevelBorder memComInfoBd;
 	JButton vblListLinkJb, vbbListLinkJb, btlListLinkJb, vbbChatLinkJb;
 	JList memComIdJL;
 	JScrollPane memComIdSrl;
+	JTable vbbListTable;
+	JScrollPane vbbListJsp;
+	DefaultTableModel vbbListModel;
+	Vector vbbListRowData;
+	Vector<String> vbbListColumnNames;
 
 	
 	public DanaComProess() {
@@ -87,17 +102,20 @@ public class DanaComProess extends JPanel {
 		leftMenuPa.add(memComJoinPa);
 		
 		// 중간 리스트 영역
-		centerListPa = new JPanel();
-		centerListPa.setLayout(new BoxLayout(centerListPa, BoxLayout.Y_AXIS));
+		centerCardLayout = new CardLayout();
+		centerListCards = new JPanel(centerCardLayout);
 		
-		centerTopPa = new JPanel();
-		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		centerTitleJl = new JLabel("▶ 공유 견적서");
-		centerTopPa.add(centerTitleJl);
-		centerListPa.add(centerTopPa);
+		danaComVbbPa = new DanaComVbbPa(danaComMain);
+		danaComVblPa = new DanaComVblPa(danaComMain);
+		danaComVbjPa = new DanaComVbjPa(danaComMain);
+		danaComVbbChatPa = new DanaComVbbChatPa(danaComMain);
+		centerListCards.add(danaComVbbPa, "danaComVbbPa");
+		centerListCards.add(danaComVblPa, "danaComVblPa");
+		centerListCards.add(danaComVbjPa, "danaComVbjPa");
+		centerListCards.add(danaComVbbChatPa, "danaComVbbChatPa");
 		
 		add(leftMenuPa, BorderLayout.WEST);
-		add(centerListPa, BorderLayout.CENTER);
+		add(centerListCards, BorderLayout.CENTER);
 		
 		//로그아웃
 		memComLogOutJb.addActionListener(new ActionListener() {
@@ -128,6 +146,31 @@ public class DanaComProess extends JPanel {
 						e2.printStackTrace();
 					}
 				}
+			}
+		});
+		
+		vblListLinkJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				centerCardLayout.show(danaComVbbPa.getParent(), "danaComVblPa");
+			}
+		});
+		vbbListLinkJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				centerCardLayout.show(danaComVbbPa.getParent(), "danaComVbbPa");
+			}
+		});
+		btlListLinkJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				centerCardLayout.show(danaComVbjPa.getParent(), "danaComVbjPa");
+			}
+		});
+		vbbChatLinkJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				centerCardLayout.show(danaComVbbChatPa.getParent(), "danaComVbbChatPa");
 			}
 		});
 		
