@@ -110,12 +110,23 @@ public class DanaComProess extends JPanel {
 				
 				// 소켓종료
 				try {
-					if(danaComMain.s != null) danaComMain.s.close();
-					if(danaComMain.ois != null) danaComMain.ois.close();
-					if(danaComMain.oos != null) danaComMain.oos.close();
+					DanaComProtocol writePort = new DanaComProtocol();
+					writePort.setP_cmd(109);  // 로그아웃
+					danaComMain.oos.writeObject(writePort);
+					danaComMain.oos.flush();
+					
 				} catch (Exception e1) {
 					System.out.println("memComLogOutJb() : " + e1);
 					e1.printStackTrace();
+				} finally {
+					try {
+						if(danaComMain.s != null) danaComMain.s.close();
+						if(danaComMain.ois != null) danaComMain.ois.close();
+						if(danaComMain.oos != null) danaComMain.oos.close();
+					} catch (Exception e2) {
+						System.out.println("memComLogOutJb() : " + e2);
+						e2.printStackTrace();
+					}
 				}
 			}
 		});

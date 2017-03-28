@@ -70,10 +70,11 @@ public class DanaComMain extends JFrame implements Runnable {
 			s = new Socket("localhost", 8888);
 			oos = new ObjectOutputStream(s.getOutputStream());
 			ois = new ObjectInputStream(s.getInputStream());
-			new Thread(DanaComMain.this).start();
-			
+						
 			oos.writeObject(writePort);
 			oos.flush();
+			
+			new Thread(DanaComMain.this).start();
 			
 		} catch (Exception e2) {
 			System.out.println(e2);
