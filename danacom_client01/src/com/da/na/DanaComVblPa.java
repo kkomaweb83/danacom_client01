@@ -1,10 +1,14 @@
 package com.da.na;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,6 +20,7 @@ public class DanaComVblPa extends JPanel {
 	
 	JPanel centerListPa, centerTopPa, centerBodyPa;
 	JLabel centerTitleJl;
+	JButton vbbPreCreateJb;
 	
 	JTable vbbListTable;
 	JScrollPane vbbListJsp;
@@ -37,7 +42,10 @@ public class DanaComVblPa extends JPanel {
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 회원 견적서");
+		centerTitleJl.setPreferredSize(new Dimension(950, 25));
+		vbbPreCreateJb = new JButton("견적서등록");
 		centerTopPa.add(centerTitleJl);
+		centerTopPa.add(vbbPreCreateJb);
 		centerListPa.add(centerTopPa);
 		
 		centerBodyPa = new JPanel();
@@ -65,6 +73,13 @@ public class DanaComVblPa extends JPanel {
 		centerListPa.add(centerBodyPa);
 		
 		add(centerListPa);
+		
+		vbbPreCreateJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVblInsertPa.getParent(), "danaComVblInsertPa");
+			}
+		});
 	}
 
 }

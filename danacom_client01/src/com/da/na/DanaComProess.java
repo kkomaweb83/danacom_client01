@@ -27,6 +27,7 @@ public class DanaComProess extends JPanel {
 	JPanel centerListCards;
 	CardLayout centerCardLayout;
 	DanaComVblPa danaComVblPa;
+	DanaComVblInsertPa danaComVblInsertPa;
 	DanaComVbbPa danaComVbbPa;
 	DanaComVbjPa danaComVbjPa;
 	DanaComVbbChatPa danaComVbbChatPa;
@@ -107,10 +108,12 @@ public class DanaComProess extends JPanel {
 		
 		danaComVbbPa = new DanaComVbbPa(danaComMain);
 		danaComVblPa = new DanaComVblPa(danaComMain);
+		danaComVblInsertPa = new DanaComVblInsertPa(danaComMain);
 		danaComVbjPa = new DanaComVbjPa(danaComMain);
 		danaComVbbChatPa = new DanaComVbbChatPa(danaComMain);
 		centerListCards.add(danaComVbbPa, "danaComVbbPa");
 		centerListCards.add(danaComVblPa, "danaComVblPa");
+		centerListCards.add(danaComVblInsertPa, "danaComVblInsertPa");
 		centerListCards.add(danaComVbjPa, "danaComVbjPa");
 		centerListCards.add(danaComVbbChatPa, "danaComVbbChatPa");
 		
