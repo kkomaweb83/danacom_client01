@@ -145,13 +145,18 @@ public class MemComJoin extends JFrame {
 						}
 						JOptionPane.showMessageDialog(getParent(), readPort.getMemComVo().getMsg());
 						
+						writePort = new DanaComProtocol();
+						writePort.setP_cmd(9999);
+						oos.writeObject(writePort);
+						oos.flush();
+						
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					} finally {
 						try {
-							if(s != null) s.close();
-							if(oos != null) oos.close();
 							if(ois != null) ois.close();
+							if(oos != null) oos.close();
+							if(s != null && !s.isClosed()) s.close();
 						} catch (Exception e2) {
 							System.out.println(e2);
 						}
@@ -208,6 +213,12 @@ public class MemComJoin extends JFrame {
 								readPort = (DanaComProtocol)ois.readObject();
 								
 								JOptionPane.showMessageDialog(getParent(), readPort.getMemComVo().getMsg());
+								
+								writePort = new DanaComProtocol();
+								writePort.setP_cmd(9999);
+								oos.writeObject(writePort);
+								oos.flush();
+								
 								if(readPort.getMemComVo().getCmd() == 301){
 									dispose();
 								}
@@ -216,9 +227,9 @@ public class MemComJoin extends JFrame {
 								e1.printStackTrace();
 							} finally {
 								try {
-									if(s != null) s.close();
-									if(oos != null) oos.close();
 									if(ois != null) ois.close();
+									if(oos != null) oos.close();
+									if(s != null && !s.isClosed()) s.close();
 								} catch (Exception e2) {
 									System.out.println(e2);
 								}

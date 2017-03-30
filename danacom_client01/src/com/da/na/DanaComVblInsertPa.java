@@ -29,6 +29,7 @@ public class DanaComVblInsertPa extends JPanel {
 	JPanel centerBodyRight1Pa, centerBodyRight2Pa, centerBodyRight3Pa, centerBodyRight4Pa, centerBodyRight5Pa, centerBodyRight6Pa, centerBodyRight7Pa;
 	JPanel centerBodyLeft1Pa, centerBodyLeft2Pa;
 	DanaComVblRProPa[] centerBodyRight6_1Pa;
+	DanaComVblRProPclPa[] centerBodyLeft2_1Pa;
 	JComboBox<String> vbb_maker_jcmb;
 	JTextField vbb_maker_jt;
 	JButton vbb_maker_jb;
@@ -163,6 +164,12 @@ public class DanaComVblInsertPa extends JPanel {
 		vbbPclListJsp = new JScrollPane(centerBodyLeft2Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		centerBodyLeft2_1Pa = new DanaComVblRProPclPa[5];
+		for(int i = 0; i < centerBodyLeft2_1Pa.length; i++){
+			centerBodyLeft2_1Pa[i] = new DanaComVblRProPclPa(danaComMain, (i+1));
+			centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[i]);
+		}
 		
 		centerBodyLeftPa.add(centerBodyLeft1Pa);
 		centerBodyLeftPa.add(vbbPclListJsp);

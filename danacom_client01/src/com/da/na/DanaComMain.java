@@ -3,6 +3,8 @@ package com.da.na;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -21,6 +23,8 @@ public class DanaComMain extends JFrame implements Runnable {
 	ObjectOutputStream oos = null;
 	ObjectInputStream ois = null;
 	
+	boolean loginOutExit = true;
+	
 	public DanaComMain() {
 		setTitle("로그인");
 		card = new CardLayout();
@@ -38,6 +42,24 @@ public class DanaComMain extends JFrame implements Runnable {
 		setResizable(false);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try{
+					if(loginOutExit && s != null && !s.isClosed()){
+						DanaComProtocol writePort = new DanaComProtocol();
+						writePort.setP_cmd(119);  // 종료에 의한 로그아웃
+						oos.writeObject(writePort);
+						oos.flush();
+					}
+				} catch (Exception e1) {
+					System.out.println("windowClosing() : " + e1);
+					e1.printStackTrace();
+				} 
+				super.windowClosing(e);
+			}
+		});
 	}
 	
 	@Override
@@ -47,6 +69,7 @@ public class DanaComMain extends JFrame implements Runnable {
 		try {
 			process : while(true){
 				readPort = (DanaComProtocol)ois.readObject();
+				System.out.println("client run() : " + readPort.getP_cmd());
 				
 				switch(readPort.getP_cmd()){
 				case 100:  // 로그인 결과
@@ -55,13 +78,23 @@ public class DanaComMain extends JFrame implements Runnable {
 				case 2001:  // 접속회원 목록
 					danaComProess.getMemComIdList(readPort);
 					break;
-				case 9999:
+				case 2009:  // 접속종료(로그아웃)
+					s.shutdownInput();
+					s.shutdownOutput();
 					break process;
 				}
 			}
 		} catch (Exception e) {
 			System.out.println("run() : " + e);
 			e.printStackTrace();
+		} finally {
+			try {
+				if(ois != null) ois.close();
+				if(oos != null) oos.close();
+				if(s != null && !s.isClosed()) s.close();
+			} catch (Exception e2) {
+				System.out.println(e2);
+			}
 		}
 	}
 	
