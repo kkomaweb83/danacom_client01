@@ -3,22 +3,16 @@ package com.da.na;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
 public class DanaComVblInsertPa extends JPanel {
@@ -26,7 +20,8 @@ public class DanaComVblInsertPa extends JPanel {
 	
 	JPanel centerListPa, centerTopPa, centerTitPa, centerBodyPa;
 	JPanel centerBodyRightPa, centerBodyLeftPa; 
-	JPanel centerBodyRight1Pa, centerBodyRight2Pa, centerBodyRight3Pa, centerBodyRight4Pa, centerBodyRight5Pa, centerBodyRight6Pa, centerBodyRight7Pa;
+	JPanel centerBodyRight1Pa, centerBodyRight2Pa, centerBodyRight3Pa, centerBodyRight4Pa
+		   , centerBodyRight5Pa, centerBodyRight6Pa, centerBodyRight7Pa;
 	JPanel centerBodyLeft1Pa, centerBodyLeft2Pa;
 	DanaComVblRProPa[] centerBodyRight6_1Pa;
 	DanaComVblRProPclPa[] centerBodyLeft2_1Pa;
@@ -40,11 +35,7 @@ public class DanaComVblInsertPa extends JPanel {
 	JLabel centerBodyRi01Jl, centerBodyLe01Jl;
 	JButton vbbCreateJb;
 	JTextField vbl_title_jt;
-	
-	Image image1, image2;
-	CanvasTest1 ct1 = new CanvasTest1();
-	CanvasTest2 ct2 = new CanvasTest2();
-	Toolkit toolkit = getToolkit();
+
 	
 	public DanaComVblInsertPa() {
 	}
@@ -115,7 +106,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight4Pa = new JPanel();
 		centerBodyRight4Pa.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		centerBodyRight4Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRight4Pa.add(new JLabel("인기상품순 | 신상품순 | 낮은가격순 | 높은가격순"));
+		centerBodyRight4Pa.add(new JLabel("신상품순 | 낮은가격순 | 높은가격순"));
 		
 		centerBodyRight5Pa = new JPanel();
 		centerBodyRight5Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -123,17 +114,18 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight5Pa.add(new JLabel("상품 리스트 총(5)개 상품"));
 		
 		centerBodyRight6Pa = new JPanel();
-		centerBodyRight6Pa.setPreferredSize(new Dimension(480, (85*2 > 500?85*10:500)));
+		//centerBodyRight6Pa.setPreferredSize(new Dimension(480, (85*2 > 500?85*10:500)));
+		centerBodyRight6Pa.setPreferredSize(new Dimension(480, 500));
 		vbbProListJsp = new JScrollPane(centerBodyRight6Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
+		/*
 		centerBodyRight6_1Pa = new DanaComVblRProPa[2];
 		for(int i = 0; i < centerBodyRight6_1Pa.length; i++){
 			centerBodyRight6_1Pa[i] = new DanaComVblRProPa(danaComMain, (i+1));
 			centerBodyRight6Pa.add(centerBodyRight6_1Pa[i]);
 		}
-
+		*/
 		centerBodyRight7Pa = new JPanel();
 		centerBodyRight7Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight7Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
@@ -160,17 +152,18 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyLeft1Pa.add(centerBodyLe01Jl);
 		
 		centerBodyLeft2Pa = new JPanel();
-		centerBodyLeft2Pa.setPreferredSize(new Dimension(480, (85*2 > 670?85*10:670)));
+		//centerBodyLeft2Pa.setPreferredSize(new Dimension(480, (85*2 > 670?85*10:670)));
+		centerBodyLeft2Pa.setPreferredSize(new Dimension(480, 670));
 		vbbPclListJsp = new JScrollPane(centerBodyLeft2Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
+		/*
 		centerBodyLeft2_1Pa = new DanaComVblRProPclPa[5];
 		for(int i = 0; i < centerBodyLeft2_1Pa.length; i++){
 			centerBodyLeft2_1Pa[i] = new DanaComVblRProPclPa(danaComMain, (i+1));
 			centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[i]);
 		}
-		
+		*/
 		centerBodyLeftPa.add(centerBodyLeft1Pa);
 		centerBodyLeftPa.add(vbbPclListJsp);
 		
@@ -182,22 +175,29 @@ public class DanaComVblInsertPa extends JPanel {
 		add(centerBodyPa, BorderLayout.CENTER);
 	}
 	
-	private class CanvasTest1 extends JPanel {
-		@Override
-		public void paint(Graphics g) {
-			g.clearRect(0, 0, getWidth(), getHeight());
-			g.drawImage(image1, 0, 0, 50, 50, this);
-			
+	public void setPclList(DanaComProtocol readPort){
+		List<ProClassVo> class_list = readPort.getClass_list();
+		
+		int totSize = class_list.size();
+		for (int i = 0; i < class_list.size(); i++) {
+			totSize += ((class_list.get(i)).getPcl_list()).size();
 		}
-	}
-	
-	private class CanvasTest2 extends JPanel {
-		@Override
-		public void paint(Graphics g) {
-			g.clearRect(0, 0, getWidth(), getHeight());
-			g.drawImage(image2, 0, 0, 50, 50, this);
-			
+		centerBodyLeft2Pa.setPreferredSize(new Dimension(480, (85*totSize > 670?85*totSize:670)));
+		
+		for (int i = 0; i < class_list.size(); i++) {
+			ProClassVo vo = (ProClassVo)class_list.get(i);
+			JLabel tempjl = new JLabel(vo.getPcl_name());
+			tempjl.setPreferredSize(new Dimension(300, 25));
+			centerBodyLeft2Pa.add(tempjl);
+			List<ProClassVo> pcl_list = vo.getPcl_list();
+			centerBodyLeft2_1Pa = new DanaComVblRProPclPa[pcl_list.size()];
+			for (int j = 0; j < pcl_list.size(); j++) {
+				centerBodyLeft2_1Pa[j] = new DanaComVblRProPclPa(danaComMain, (ProClassVo)pcl_list.get(j), "insert");
+				centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[j]);
+			}
 		}
+		vbbPclListJsp.getVerticalScrollBar().setValue(vbbPclListJsp.getVerticalScrollBar().getMaximum());
+		vbbPclListJsp.getVerticalScrollBar().setValue(vbbPclListJsp.getVerticalScrollBar().getMinimum());
 	}
 
 }

@@ -78,6 +78,9 @@ public class DanaComMain extends JFrame implements Runnable {
 				case 2001:  // 접속회원 목록
 					danaComProess.getMemComIdList(readPort);
 					break;
+				case 3001: // 견적서 등록폼 - 상품분류 조회
+					danaComProess.danaComVblInsertPa.setPclList(readPort);
+					break;
 				case 2009:  // 접속종료(로그아웃)
 					s.shutdownInput();
 					s.shutdownOutput();
@@ -108,6 +111,17 @@ public class DanaComMain extends JFrame implements Runnable {
 			oos.flush();
 			
 			new Thread(DanaComMain.this).start();
+			
+		} catch (Exception e2) {
+			System.out.println(e2);
+			e2.printStackTrace();
+		} 
+	}
+	
+	public void connWrite(DanaComProtocol writePort){
+		try {
+			oos.writeObject(writePort);
+			oos.flush();
 			
 		} catch (Exception e2) {
 			System.out.println(e2);

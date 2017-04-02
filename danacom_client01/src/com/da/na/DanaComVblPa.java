@@ -77,6 +77,18 @@ public class DanaComVblPa extends JPanel {
 		vbbPreCreateJb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				DanaComProtocol writePort = null;
+				
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3001);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				} 
+				
 				danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVblInsertPa.getParent(), "danaComVblInsertPa");
 			}
 		});
