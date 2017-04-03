@@ -79,14 +79,13 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight1Pa = new JPanel();
 		centerBodyRight1Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight1Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRi01Jl = new JLabel("CPU");
+		centerBodyRi01Jl = new JLabel("");
 		centerBodyRight1Pa.add(centerBodyRi01Jl);
 		
 		centerBodyRight2Pa = new JPanel();
 		centerBodyRight2Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight2Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		String[] items = {"-- 제조사 --","인텔","AMD"};
-		vbb_maker_jcmb = new JComboBox<>(items);
+		vbb_maker_jcmb = new JComboBox<>();
 		vbb_maker_jt = new JTextField();
 		vbb_maker_jt.setPreferredSize(new Dimension(250, 25));
 		vbb_maker_jb = new JButton("검색");
@@ -97,21 +96,22 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight3Pa = new JPanel();
 		centerBodyRight3Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight3Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		/*
 		vbb_pcl_jcmb = new JComboBox[3];
 		for(int i = 0; i < vbb_pcl_jcmb.length; i++){
 			vbb_pcl_jcmb[i] = new JComboBox<>(items);
 			centerBodyRight3Pa.add(vbb_pcl_jcmb[i]);
 		}
-		
+		*/
 		centerBodyRight4Pa = new JPanel();
 		centerBodyRight4Pa.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		centerBodyRight4Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		centerBodyRight4Pa.add(new JLabel("신상품순 | 낮은가격순 | 높은가격순"));
 		
-		centerBodyRight5Pa = new JPanel();
-		centerBodyRight5Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		centerBodyRight5Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRight5Pa.add(new JLabel("상품 리스트 총(5)개 상품"));
+		//centerBodyRight5Pa = new JPanel();
+		//centerBodyRight5Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		//centerBodyRight5Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		//centerBodyRight5Pa.add(new JLabel("상품 리스트 총(5)개 상품"));
 		
 		centerBodyRight6Pa = new JPanel();
 		//centerBodyRight6Pa.setPreferredSize(new Dimension(480, (85*2 > 500?85*10:500)));
@@ -126,18 +126,19 @@ public class DanaComVblInsertPa extends JPanel {
 			centerBodyRight6Pa.add(centerBodyRight6_1Pa[i]);
 		}
 		*/
-		centerBodyRight7Pa = new JPanel();
-		centerBodyRight7Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		centerBodyRight7Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRight7Pa.add(new JLabel("1 | 2 | 3"));
+		
+		//centerBodyRight7Pa = new JPanel();
+		//centerBodyRight7Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		//centerBodyRight7Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		//centerBodyRight7Pa.add(new JLabel("1 | 2 | 3"));
 		
 		centerBodyRightPa.add(centerBodyRight1Pa);
 		centerBodyRightPa.add(centerBodyRight2Pa);
 		centerBodyRightPa.add(centerBodyRight3Pa);
 		centerBodyRightPa.add(centerBodyRight4Pa);
-		centerBodyRightPa.add(centerBodyRight5Pa);
+		//centerBodyRightPa.add(centerBodyRight5Pa);
 		centerBodyRightPa.add(vbbProListJsp);
-		centerBodyRightPa.add(centerBodyRight7Pa);
+		//centerBodyRightPa.add(centerBodyRight7Pa);
 		
 		// 오른쪽 상품분류 영역
 		centerBodyLeftPa = new JPanel();
@@ -176,6 +177,8 @@ public class DanaComVblInsertPa extends JPanel {
 	}
 	
 	public void setPclList(DanaComProtocol readPort){
+		centerBodyLeft2Pa.removeAll();
+		
 		List<ProClassVo> class_list = readPort.getClass_list();
 		
 		int totSize = class_list.size();
@@ -198,6 +201,53 @@ public class DanaComVblInsertPa extends JPanel {
 		}
 		vbbPclListJsp.getVerticalScrollBar().setValue(vbbPclListJsp.getVerticalScrollBar().getMaximum());
 		vbbPclListJsp.getVerticalScrollBar().setValue(vbbPclListJsp.getVerticalScrollBar().getMinimum());
+		
+		DanaComProtocol writePort = null;
+		try {
+			writePort = new DanaComProtocol();
+			writePort.setP_cmd(3011);
+			writePort.setPcl_no("0101");
+			
+			danaComMain.connWrite(writePort);
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} 
+	}
+	public void setMkrPclList(DanaComProtocol readPort) {
+		centerBodyRi01Jl.setText(readPort.getPcl_name());
+		
+		vbb_maker_jcmb.removeAllItems();
+		vbb_maker_jcmb.addItem("-- 제조사 --");
+		for(int i = 0; i < readPort.getMkr_list().size(); i++){
+			MakerVo makVo = readPort.getMkr_list().get(i);
+			//vbb_maker_jcmb.addItem(makVo.getMkr_no()+"="+makVo.getMkr_name());
+			vbb_maker_jcmb.addItem(makVo.getMkr_name());
+		}
+		
+		centerBodyRight3Pa.removeAll();
+		List<ProClassVo> class_list = readPort.getClass_list();
+		centerBodyRight3Pa.setPreferredSize(new Dimension(480, 70));
+		
+		for (int i = 0; i < class_list.size(); i++) {
+			ProClassVo vo = (ProClassVo)class_list.get(i);
+			List<ProClassVo> pcl_list = vo.getPcl_list();
+			vbb_pcl_jcmb = new JComboBox[pcl_list.size()];
+			for (int j = 0; j < pcl_list.size(); j++) {
+				ProClassVo vo2 = (ProClassVo)pcl_list.get(j);
+				
+				vbb_pcl_jcmb[j] = new JComboBox<>();
+				vbb_pcl_jcmb[j].addItem(vo2.getPcl_name());
+				centerBodyRight3Pa.add(vbb_pcl_jcmb[j]);
+				
+				List<ProClassVo> pcl_list2 = vo2.getPcl_list();
+				
+				for (int k = 0; k < pcl_list2.size(); k++) {
+					ProClassVo vo3 = (ProClassVo)pcl_list2.get(k);
+					vbb_pcl_jcmb[j].addItem(vo3.getPcl_name());
+				}
+			}
+		}
 	}
 
 }

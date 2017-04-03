@@ -107,8 +107,10 @@ public class DanaComProess extends JPanel {
 		leftMenuPa.add(memComJoinPa);
 		leftMenuPa.add(new JLabel(" "));
 		leftMenuPa.add(new JLabel("▷ 관리자 메뉴 ◁"));
-		leftMenuPa.add(new JButton("상품관리"));
-		leftMenuPa.add(new JButton("베틀관리"));
+		leftMenuPa.add(new JButton("상품분류 관리"));
+		leftMenuPa.add(new JButton("제조사 관리"));
+		leftMenuPa.add(new JButton("상품 리스트"));
+		leftMenuPa.add(new JButton("베틀 관리"));
 		leftMenuPa.add(new JLabel(" "));
 		
 		// 중간 리스트 영역
