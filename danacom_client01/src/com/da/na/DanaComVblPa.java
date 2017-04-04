@@ -42,7 +42,7 @@ public class DanaComVblPa extends JPanel {
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 회원 견적서");
-		centerTitleJl.setPreferredSize(new Dimension(950, 25));
+		centerTitleJl.setPreferredSize(new Dimension(700, 25));
 		vbbPreCreateJb = new JButton("견적서등록");
 		centerTopPa.add(centerTitleJl);
 		centerTopPa.add(vbbPreCreateJb);

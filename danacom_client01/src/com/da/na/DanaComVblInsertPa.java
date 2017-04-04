@@ -68,7 +68,6 @@ public class DanaComVblInsertPa extends JPanel {
 		
 		// 중앙 견적서 영역  ###################################
 		centerBodyPa = new JPanel();
-		//centerBodyPa.setLayout(new GridLayout(1, 1));
 		
 		// 왼쪽 검색영역
 		centerBodyRightPa = new JPanel();
@@ -96,49 +95,23 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight3Pa = new JPanel();
 		centerBodyRight3Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight3Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		/*
-		vbb_pcl_jcmb = new JComboBox[3];
-		for(int i = 0; i < vbb_pcl_jcmb.length; i++){
-			vbb_pcl_jcmb[i] = new JComboBox<>(items);
-			centerBodyRight3Pa.add(vbb_pcl_jcmb[i]);
-		}
-		*/
+
 		centerBodyRight4Pa = new JPanel();
 		centerBodyRight4Pa.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		centerBodyRight4Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		centerBodyRight4Pa.add(new JLabel("신상품순 | 낮은가격순 | 높은가격순"));
 		
-		//centerBodyRight5Pa = new JPanel();
-		//centerBodyRight5Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//centerBodyRight5Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		//centerBodyRight5Pa.add(new JLabel("상품 리스트 총(5)개 상품"));
-		
 		centerBodyRight6Pa = new JPanel();
-		//centerBodyRight6Pa.setPreferredSize(new Dimension(480, (85*2 > 500?85*10:500)));
 		centerBodyRight6Pa.setPreferredSize(new Dimension(480, 500));
 		vbbProListJsp = new JScrollPane(centerBodyRight6Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		/*
-		centerBodyRight6_1Pa = new DanaComVblRProPa[2];
-		for(int i = 0; i < centerBodyRight6_1Pa.length; i++){
-			centerBodyRight6_1Pa[i] = new DanaComVblRProPa(danaComMain, (i+1));
-			centerBodyRight6Pa.add(centerBodyRight6_1Pa[i]);
-		}
-		*/
-		
-		//centerBodyRight7Pa = new JPanel();
-		//centerBodyRight7Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//centerBodyRight7Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		//centerBodyRight7Pa.add(new JLabel("1 | 2 | 3"));
 		
 		centerBodyRightPa.add(centerBodyRight1Pa);
 		centerBodyRightPa.add(centerBodyRight2Pa);
 		centerBodyRightPa.add(centerBodyRight3Pa);
 		centerBodyRightPa.add(centerBodyRight4Pa);
-		//centerBodyRightPa.add(centerBodyRight5Pa);
 		centerBodyRightPa.add(vbbProListJsp);
-		//centerBodyRightPa.add(centerBodyRight7Pa);
 		
 		// 오른쪽 상품분류 영역
 		centerBodyLeftPa = new JPanel();
@@ -153,18 +126,11 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyLeft1Pa.add(centerBodyLe01Jl);
 		
 		centerBodyLeft2Pa = new JPanel();
-		//centerBodyLeft2Pa.setPreferredSize(new Dimension(480, (85*2 > 670?85*10:670)));
 		centerBodyLeft2Pa.setPreferredSize(new Dimension(480, 670));
 		vbbPclListJsp = new JScrollPane(centerBodyLeft2Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		/*
-		centerBodyLeft2_1Pa = new DanaComVblRProPclPa[5];
-		for(int i = 0; i < centerBodyLeft2_1Pa.length; i++){
-			centerBodyLeft2_1Pa[i] = new DanaComVblRProPclPa(danaComMain, (i+1));
-			centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[i]);
-		}
-		*/
+
 		centerBodyLeftPa.add(centerBodyLeft1Pa);
 		centerBodyLeftPa.add(vbbPclListJsp);
 		
@@ -199,8 +165,8 @@ public class DanaComVblInsertPa extends JPanel {
 				centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[j]);
 			}
 		}
-		vbbPclListJsp.getVerticalScrollBar().setValue(vbbPclListJsp.getVerticalScrollBar().getMaximum());
-		vbbPclListJsp.getVerticalScrollBar().setValue(vbbPclListJsp.getVerticalScrollBar().getMinimum());
+		centerBodyLeft2Pa.revalidate();
+		centerBodyLeft2Pa.repaint();
 		
 		DanaComProtocol writePort = null;
 		try {
@@ -221,11 +187,11 @@ public class DanaComVblInsertPa extends JPanel {
 		vbb_maker_jcmb.addItem("-- 제조사 --");
 		for(int i = 0; i < readPort.getMkr_list().size(); i++){
 			MakerVo makVo = readPort.getMkr_list().get(i);
-			//vbb_maker_jcmb.addItem(makVo.getMkr_no()+"="+makVo.getMkr_name());
 			vbb_maker_jcmb.addItem(makVo.getMkr_name());
 		}
 		
 		centerBodyRight3Pa.removeAll();
+		vbb_pcl_jcmb = null;
 		List<ProClassVo> class_list = readPort.getClass_list();
 		centerBodyRight3Pa.setPreferredSize(new Dimension(480, 70));
 		
@@ -248,6 +214,37 @@ public class DanaComVblInsertPa extends JPanel {
 				}
 			}
 		}
+		centerBodyRight3Pa.revalidate();
+		centerBodyRight3Pa.repaint();
+		
+		DanaComProtocol writePort = null;
+		try {
+			writePort = new DanaComProtocol();
+			writePort.setP_cmd(3021);
+			writePort.setPcl_no(readPort.getPcl_no());
+			
+			danaComMain.connWrite(writePort);
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} 
+	}
+	public void setProList(DanaComProtocol readPort) {
+		centerBodyRight6Pa.removeAll();
+		
+		List<ProductVo> pro_list = readPort.getPro_list();
+		
+		int totSize = pro_list.size();
+		centerBodyRight6Pa.setPreferredSize(new Dimension(480, (85*totSize > 500?85*totSize:500)));
+		
+		centerBodyRight6_1Pa = new DanaComVblRProPa[totSize];
+		for(int i = 0; i < pro_list.size(); i++){
+			centerBodyRight6_1Pa[i] = new DanaComVblRProPa(danaComMain, (ProductVo)pro_list.get(i), centerBodyLeft2_1Pa);
+			centerBodyRight6Pa.add(centerBodyRight6_1Pa[i]);
+		}
+		centerBodyRight6Pa.revalidate();
+		centerBodyRight6Pa.repaint();
+		
 	}
 
 }

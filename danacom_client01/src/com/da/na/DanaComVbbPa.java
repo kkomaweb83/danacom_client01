@@ -1,6 +1,7 @@
 package com.da.na;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.Vector;
 
@@ -37,6 +38,7 @@ public class DanaComVbbPa extends JPanel {
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 공유 견적서");
+		centerTitleJl.setPreferredSize(new Dimension(950, 25));
 		centerTopPa.add(centerTitleJl);
 		centerListPa.add(centerTopPa);
 		
