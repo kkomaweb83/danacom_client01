@@ -24,6 +24,7 @@ public class DanaComMain extends JFrame implements Runnable {
 	ObjectInputStream ois = null;
 	
 	boolean loginOutExit = true;
+	MemComVo memVo = null;
 	
 	public DanaComMain() {
 		setTitle("로그인");
@@ -87,7 +88,10 @@ public class DanaComMain extends JFrame implements Runnable {
 				case 3021: // 견적서 등록폼 - 기본 상품검색 조회
 					danaComProess.danaComVblInsertPa.setProList(readPort);
 					break;
-				case 2009:  // 접속종료(로그아웃)
+				case 3051: // 회원 견적서 등록 => 등록 초기상태로
+					danaComProess.danaComVblInsertPa.vbbPreCreate(readPort);
+					break;
+				case 2009: // 접속종료(로그아웃)
 					s.shutdownInput();
 					s.shutdownOutput();
 					break process;

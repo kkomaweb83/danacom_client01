@@ -3,12 +3,16 @@ package com.da.na;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -24,11 +28,11 @@ public class DanaComVblInsertPa extends JPanel {
 		   , centerBodyRight5Pa, centerBodyRight6Pa, centerBodyRight7Pa;
 	JPanel centerBodyLeft1Pa, centerBodyLeft2Pa;
 	DanaComVblRProPa[] centerBodyRight6_1Pa;
-	DanaComVblRProPclPa[] centerBodyLeft2_1Pa;
-	JComboBox<String> vbb_maker_jcmb;
+	DanaComVblRProPclPa[] centerBodyLeft2_1Pa = null;
+	JComboBox<ComboItem> vbb_maker_jcmb;
 	JTextField vbb_maker_jt;
 	JButton vbb_maker_jb;
-	JComboBox<String>[] vbb_pcl_jcmb;
+	JComboBox<ComboItem>[] vbb_pcl_jcmb;
 	JPanel vbbProListPa;
 	JScrollPane vbbProListJsp, vbbPclListJsp;
 	JLabel centerTitleJl, centerTitleJl2;
@@ -140,6 +144,71 @@ public class DanaComVblInsertPa extends JPanel {
 
 		add(centerListPa, BorderLayout.NORTH);
 		add(centerBodyPa, BorderLayout.CENTER);
+		
+		vbbCreateJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if("".equals(vbl_title_jt.getText().trim())){
+					JOptionPane.showMessageDialog(getParent(), "견적서 제목을 입력하세요.");
+					return;
+				}
+				
+				if(centerBodyLeft2_1Pa == null || centerBodyLeft2_1Pa.length == 0){
+					JOptionPane.showMessageDialog(getParent(), "선택한 상품이 없습니다.");
+					return;
+				}
+				
+				List<VblDetVo> vdt_list = new ArrayList<>();
+				VirBillVo virBillVo = new VirBillVo();
+				virBillVo.setVbl_title(vbl_title_jt.getText().trim());
+				virBillVo.setVbl_mem_no(danaComMain.memVo.getMem_no());
+				virBillVo.setVbl_bor_answer("N");
+				
+				for(int i = 0; i < centerBodyLeft2_1Pa.length; i++){
+					if(centerBodyLeft2_1Pa[i].proVo_m != null){
+						VblDetVo vblDetVo = new VblDetVo();
+						vblDetVo.setVdt_quantity((int)centerBodyLeft2_1Pa[i].grade_sp.getValue());
+						vblDetVo.setVdt_pro_no(centerBodyLeft2_1Pa[i].proVo_m.getPro_no());
+						
+						vdt_list.add(vblDetVo);
+					}
+				}
+				if(vdt_list == null || vdt_list.size() < 1){
+					JOptionPane.showMessageDialog(getParent(), "선택한 상품이 없습니다.");
+					return;
+				}
+				
+				DanaComProtocol writePort = null;
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3051);
+					writePort.setVirBillVo(virBillVo);
+					writePort.setVdt_list(vdt_list);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				} 
+			}
+		});
+		
+		vbb_maker_jb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ComboItem maker_item = (ComboItem)vbb_maker_jcmb.getSelectedItem();
+				String maker_value = ((ComboItem)maker_item).getValue();
+				String maker_key = ((ComboItem)maker_item).getKey();
+				System.out.println(maker_key + " : " + maker_value);
+				
+				for(int i = 0; i < vbb_pcl_jcmb.length; i++){
+					ComboItem pcl_item = (ComboItem)vbb_pcl_jcmb[i].getSelectedItem();
+					String pcl_value = ((ComboItem)pcl_item).getValue();
+					String pcl_key = ((ComboItem)pcl_item).getKey();
+					System.out.println(pcl_key + " : " + pcl_value);
+				}
+			}
+		});
 	}
 	
 	public void setPclList(DanaComProtocol readPort){
@@ -184,10 +253,10 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRi01Jl.setText(readPort.getPcl_name());
 		
 		vbb_maker_jcmb.removeAllItems();
-		vbb_maker_jcmb.addItem("-- 제조사 --");
+		vbb_maker_jcmb.addItem(new ComboItem("-- 제조사 --", ""));
 		for(int i = 0; i < readPort.getMkr_list().size(); i++){
 			MakerVo makVo = readPort.getMkr_list().get(i);
-			vbb_maker_jcmb.addItem(makVo.getMkr_name());
+			vbb_maker_jcmb.addItem(new ComboItem(makVo.getMkr_name(), String.valueOf(makVo.getMkr_no())));
 		}
 		
 		centerBodyRight3Pa.removeAll();
@@ -203,14 +272,14 @@ public class DanaComVblInsertPa extends JPanel {
 				ProClassVo vo2 = (ProClassVo)pcl_list.get(j);
 				
 				vbb_pcl_jcmb[j] = new JComboBox<>();
-				vbb_pcl_jcmb[j].addItem(vo2.getPcl_name());
+				vbb_pcl_jcmb[j].addItem(new ComboItem(vo2.getPcl_name(),""));
 				centerBodyRight3Pa.add(vbb_pcl_jcmb[j]);
 				
 				List<ProClassVo> pcl_list2 = vo2.getPcl_list();
 				
 				for (int k = 0; k < pcl_list2.size(); k++) {
 					ProClassVo vo3 = (ProClassVo)pcl_list2.get(k);
-					vbb_pcl_jcmb[j].addItem(vo3.getPcl_name());
+					vbb_pcl_jcmb[j].addItem(new ComboItem(vo3.getPcl_name(),vo3.getPcl_no()));
 				}
 			}
 		}
@@ -245,6 +314,23 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight6Pa.revalidate();
 		centerBodyRight6Pa.repaint();
 		
+	}
+	
+	public void vbbPreCreate(DanaComProtocol readPort){
+		JOptionPane.showMessageDialog(getParent(), readPort.getR_msg());
+		
+		vbl_title_jt.setText("");
+		DanaComProtocol writePort = null;
+		
+		try {
+			writePort = new DanaComProtocol();
+			writePort.setP_cmd(3001);
+			
+			danaComMain.connWrite(writePort);
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} 
 	}
 
 }

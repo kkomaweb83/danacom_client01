@@ -194,6 +194,8 @@ public class DanaComProess extends JPanel {
 			
 			memNameJl.setText(memComReadVo.getMem_name() + " 님");
 			memMilJl.setText("포인트 : " + memComReadVo.getMem_mil() + "점");
+			
+			danaComMain.memVo = memComReadVo;
 		} catch (Exception e) {
 			System.out.println(e);
 			e.printStackTrace();
