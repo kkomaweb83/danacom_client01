@@ -44,10 +44,10 @@ public class DanaComVblRProPclPa extends JPanel {
 		pcl_name = proClassVo.getPcl_name();
 		
 		vbb_pro_jl = new JLabel("    ☜ 항목을 클릭하세요.");
-		vbb_pro_jl.setPreferredSize(new Dimension(350, 25));
+		vbb_pro_jl.setPreferredSize(new Dimension(340, 25));
 		
 		vbb_pro_name_jl = new JLabel("");
-		vbb_pro_name_jl.setPreferredSize(new Dimension(350, 25));
+		vbb_pro_name_jl.setPreferredSize(new Dimension(340, 25));
 		
 		//스피너 넘버모델 셋팅                                                   
 		grade_sp = new JSpinner();

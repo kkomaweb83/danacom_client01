@@ -134,7 +134,7 @@ public class DanaComLogin extends JPanel {
 			danaComMain.danaComProess.proessStart(readPort.getMemComVo());
 			
 			Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
-			danaComMain.setBounds(20, 20, 1300, 850);
+			danaComMain.setBounds(20, 20, 1200, 750);
 			
 			danaComMain.card.show(getParent(), "danaComProess");
 		}

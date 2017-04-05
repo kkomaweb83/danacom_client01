@@ -42,7 +42,7 @@ public class DanaComVblPa extends JPanel {
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 회원 견적서");
-		centerTitleJl.setPreferredSize(new Dimension(700, 25));
+		centerTitleJl.setPreferredSize(new Dimension(600, 25));
 		vbbPreCreateJb = new JButton("견적서등록");
 		centerTopPa.add(centerTitleJl);
 		centerTopPa.add(vbbPreCreateJb);
@@ -65,7 +65,7 @@ public class DanaComVblPa extends JPanel {
 		vbbListJsp = new JScrollPane(vbbListTable);
 		
 		vbbListTable.getColumn("번호").setPreferredWidth(70);
-		vbbListTable.getColumn("제목").setPreferredWidth(700);
+		vbbListTable.getColumn("제목").setPreferredWidth(600);
 		vbbListTable.getColumn("날짜").setPreferredWidth(100);
 		vbbListTable.getColumn("공유여부").setPreferredWidth(100);
 		

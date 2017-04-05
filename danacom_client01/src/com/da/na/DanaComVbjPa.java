@@ -57,7 +57,7 @@ public class DanaComVbjPa extends JPanel {
 		vbbListJsp = new JScrollPane(vbbListTable);
 		
 		vbbListTable.getColumn("베틀번호").setPreferredWidth(70);
-		vbbListTable.getColumn("베틀명").setPreferredWidth(700);
+		vbbListTable.getColumn("베틀명").setPreferredWidth(600);
 		vbbListTable.getColumn("베틀시작일").setPreferredWidth(100);
 		vbbListTable.getColumn("베틀마감일").setPreferredWidth(100);
 		

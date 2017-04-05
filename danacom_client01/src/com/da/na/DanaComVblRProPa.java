@@ -47,7 +47,7 @@ public class DanaComVblRProPa extends JPanel {
 		centerBodyRight6_2Pa = new JPanel();
 		centerBodyRight6_2Pa.setLayout(new BoxLayout(centerBodyRight6_2Pa, BoxLayout.Y_AXIS));
 		vbb_pro_jl = new JLabel(proVo.getPpt_pro_name());
-		vbb_pro_jl.setPreferredSize(new Dimension(330, 25));
+		vbb_pro_jl.setPreferredSize(new Dimension(310, 25));
 		vbb_price_jl = new JLabel(proVo.getPro_ch_price());
 		centerBodyRight6_2Pa.add(vbb_pro_jl);
 		centerBodyRight6_2Pa.add(vbb_price_jl);

@@ -38,7 +38,7 @@ public class DanaComVbbPa extends JPanel {
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 공유 견적서");
-		centerTitleJl.setPreferredSize(new Dimension(950, 25));
+		centerTitleJl.setPreferredSize(new Dimension(850, 25));
 		centerTopPa.add(centerTitleJl);
 		centerListPa.add(centerTopPa);
 		
@@ -67,7 +67,7 @@ public class DanaComVbbPa extends JPanel {
 		//celAlignRight.setHorizontalAlignment(JLabel.RIGHT);
 		
 		vbbListTable.getColumn("번호").setPreferredWidth(70);
-		vbbListTable.getColumn("제목").setPreferredWidth(700);
+		vbbListTable.getColumn("제목").setPreferredWidth(600);
 		vbbListTable.getColumn("글쓴이").setPreferredWidth(100);
 		vbbListTable.getColumn("날짜").setPreferredWidth(100);
 		vbbListTable.getColumn("추천수").setPreferredWidth(80);

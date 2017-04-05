@@ -68,7 +68,7 @@ public class DanaComProess extends JPanel {
 		// 왼편 상단 로그인 정보
 		memComInfoPa = new JPanel();
 		memComInfoPa.setLayout(new BoxLayout(memComInfoPa, BoxLayout.Y_AXIS));
-		memComInfoPa.setPreferredSize(new Dimension(170, 200));
+		memComInfoPa.setPreferredSize(new Dimension(150, 170));
 		//memComInfoBd = new BevelBorder(BevelBorder.RAISED); //3차원적인 테두리 효과를 위한것이고 양각의 옵션을 준다.
 		//memComInfoPa.setBorder(memComInfoBd);
 

@@ -55,7 +55,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 회원 견적서 등록");
-		centerTitleJl.setPreferredSize(new Dimension(950, 25));
+		centerTitleJl.setPreferredSize(new Dimension(850, 25));
 		vbbCreateJb = new JButton("등록");
 		centerTopPa.add(centerTitleJl);
 		centerTopPa.add(vbbCreateJb);
@@ -65,7 +65,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerTitPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl2 = new JLabel("견적서 제목");
 		vbl_title_jt = new JTextField();
-		vbl_title_jt.setPreferredSize(new Dimension(800, 25));
+		vbl_title_jt.setPreferredSize(new Dimension(850, 25));
 		centerTitPa.add(centerTitleJl2);
 		centerTitPa.add(vbl_title_jt);
 		centerListPa.add(centerTitPa);
@@ -77,7 +77,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRightPa = new JPanel();
 		centerBodyRightPa.setLayout(new BoxLayout(centerBodyRightPa, BoxLayout.Y_AXIS));
 		centerBodyRightPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRightPa.setPreferredSize(new Dimension(500, 700));
+		centerBodyRightPa.setPreferredSize(new Dimension(480, 630));
 		
 		centerBodyRight1Pa = new JPanel();
 		centerBodyRight1Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -90,7 +90,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight2Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		vbb_maker_jcmb = new JComboBox<>();
 		vbb_maker_jt = new JTextField();
-		vbb_maker_jt.setPreferredSize(new Dimension(250, 25));
+		vbb_maker_jt.setPreferredSize(new Dimension(200, 25));
 		vbb_maker_jb = new JButton("검색");
 		centerBodyRight2Pa.add(vbb_maker_jcmb);
 		centerBodyRight2Pa.add(vbb_maker_jt);
@@ -106,7 +106,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight4Pa.add(new JLabel("신상품순 | 낮은가격순 | 높은가격순"));
 		
 		centerBodyRight6Pa = new JPanel();
-		centerBodyRight6Pa.setPreferredSize(new Dimension(480, 500));
+		centerBodyRight6Pa.setPreferredSize(new Dimension(430, 450));
 		vbbProListJsp = new JScrollPane(centerBodyRight6Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -121,7 +121,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyLeftPa = new JPanel();
 		centerBodyLeftPa.setLayout(new BoxLayout(centerBodyLeftPa, BoxLayout.Y_AXIS));
 		centerBodyLeftPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyLeftPa.setPreferredSize(new Dimension(500, 700));
+		centerBodyLeftPa.setPreferredSize(new Dimension(480, 630));
 		
 		centerBodyLeft1Pa = new JPanel();
 		centerBodyLeft1Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -130,7 +130,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyLeft1Pa.add(centerBodyLe01Jl);
 		
 		centerBodyLeft2Pa = new JPanel();
-		centerBodyLeft2Pa.setPreferredSize(new Dimension(480, 670));
+		centerBodyLeft2Pa.setPreferredSize(new Dimension(430, 570));
 		vbbPclListJsp = new JScrollPane(centerBodyLeft2Pa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -220,7 +220,7 @@ public class DanaComVblInsertPa extends JPanel {
 		for (int i = 0; i < class_list.size(); i++) {
 			totSize += ((class_list.get(i)).getPcl_list()).size();
 		}
-		centerBodyLeft2Pa.setPreferredSize(new Dimension(480, (85*totSize > 670?85*totSize:670)));
+		centerBodyLeft2Pa.setPreferredSize(new Dimension(430, (85*totSize > 610?85*totSize:610)));
 		
 		for (int i = 0; i < class_list.size(); i++) {
 			ProClassVo vo = (ProClassVo)class_list.get(i);
@@ -262,7 +262,7 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight3Pa.removeAll();
 		vbb_pcl_jcmb = null;
 		List<ProClassVo> class_list = readPort.getClass_list();
-		centerBodyRight3Pa.setPreferredSize(new Dimension(480, 70));
+		centerBodyRight3Pa.setPreferredSize(new Dimension(430, 70));
 		
 		for (int i = 0; i < class_list.size(); i++) {
 			ProClassVo vo = (ProClassVo)class_list.get(i);
@@ -304,7 +304,7 @@ public class DanaComVblInsertPa extends JPanel {
 		List<ProductVo> pro_list = readPort.getPro_list();
 		
 		int totSize = pro_list.size();
-		centerBodyRight6Pa.setPreferredSize(new Dimension(480, (85*totSize > 500?85*totSize:500)));
+		centerBodyRight6Pa.setPreferredSize(new Dimension(430, (85*totSize > 470?85*totSize:470)));
 		
 		centerBodyRight6_1Pa = new DanaComVblRProPa[totSize];
 		for(int i = 0; i < pro_list.size(); i++){
