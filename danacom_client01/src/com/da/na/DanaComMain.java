@@ -94,6 +94,15 @@ public class DanaComMain extends JFrame implements Runnable {
 				case 3061: // 회원 견적서 리스트 조회
 					danaComProess.danaComVblPa.setVblList(readPort);
 					break;	
+				case 3071: // 회원 견적서 상세
+					danaComProess.danaComVblUpdatePa.setPclList(readPort);
+					break;	
+				case 3072: // 견적서 등록폼 - 상품검색 조건(제조사, 상품분류) 조회
+					danaComProess.danaComVblUpdatePa.setMkrPclList(readPort);
+					break;
+				case 3073: // 견적서 등록폼 - 기본 상품검색 조회
+					danaComProess.danaComVblUpdatePa.setProList(readPort);
+					break;
 				case 2009: // 접속종료(로그아웃)
 					s.shutdownInput();
 					s.shutdownOutput();

@@ -2,6 +2,8 @@ package com.da.na;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -49,6 +51,25 @@ public class DanaComVblDetailPa extends JPanel {
 		vblListTopPa.add(vblListTop03Jl);
 		vblListTopPa.add(vblListTop04Jl);
 		add(vblListTopPa);
+		
+		vblListTop01Jb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DanaComProtocol writePort = null;
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3071);
+					writePort.setVbl_no(vbl_no);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				
+				danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVblUpdatePa.getParent(), "danaComVblUpdatePa");
+			}
+		});
 	}
 
 }

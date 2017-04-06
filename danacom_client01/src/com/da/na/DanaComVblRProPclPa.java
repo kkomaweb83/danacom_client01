@@ -25,6 +25,7 @@ public class DanaComVblRProPclPa extends JPanel {
 	String pcl_no = ""; 
 	String pcl_name = "";
 	ProductVo proVo_m = null;
+	String update = "";
 	
 	public DanaComVblRProPclPa() {
 	}
@@ -32,6 +33,7 @@ public class DanaComVblRProPclPa extends JPanel {
 	public DanaComVblRProPclPa(DanaComMain danaComMain, ProClassVo proClassVo, String mode) {
 		this.danaComMain = danaComMain;
 		
+		update = mode;
 		centerBodyRight6_1Pa = new JPanel();
 		centerBodyRight6_1Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight6_1Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
@@ -81,7 +83,11 @@ public class DanaComVblRProPclPa extends JPanel {
 				DanaComProtocol writePort = null;
 				try {
 					writePort = new DanaComProtocol();
-					writePort.setP_cmd(3011);
+					if(update.equals("insert")){
+						writePort.setP_cmd(3011);
+					}else if(update.equals("update")){
+						writePort.setP_cmd(3072);
+					}
 					writePort.setPcl_no(pcl_no);
 					
 					danaComMain.connWrite(writePort);
@@ -117,6 +123,10 @@ public class DanaComVblRProPclPa extends JPanel {
 		centerBodyRight6_21Pa.add(centerBodyRight6_22Pa);
 		
 		vbb_price_jl.setText(proVo_r.getPro_ch_price());
+		
+		if(proVo_r.getPst_quantity() > 0){
+			grade_sp.setValue(proVo_r.getPst_quantity());
+		}
 		
 		centerBodyRight6_23Pa.add(grade_sp);
 		centerBodyRight6_23Pa.add(vbb_price_jl);
