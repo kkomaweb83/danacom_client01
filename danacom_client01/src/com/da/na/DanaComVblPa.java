@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ public class DanaComVblPa extends JPanel {
 	JButton vblPreCreateJb;
 	
 	JPanel vblListPa, vblListTopPa;
+	DanaComVblDetailPa[] vblList_detailPa;
 	JScrollPane vblListJsp;
 	JLabel vblListTop01Jl, vblListTop02Jl, vblListTop03Jl, vblListTop04Jl;
 	
@@ -108,6 +110,29 @@ public class DanaComVblPa extends JPanel {
 				danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVblInsertPa.getParent(), "danaComVblInsertPa");
 			}
 		});
+	}
+	public void setVblList(DanaComProtocol readPort) {
+		vblListPa.removeAll();
+		
+		vblListTopPa.add(vblListTop01Jl);
+		vblListTopPa.add(vblListTop02Jl);
+		vblListTopPa.add(vblListTop03Jl);
+		vblListTopPa.add(vblListTop04Jl);
+		vblListPa.add(vblListTopPa);
+		
+		List<VirBillVo> vir_list = readPort.getVir_list();
+		
+		int totSize = vir_list.size();
+		vblListPa.setPreferredSize(new Dimension(890, (85*totSize > 650?85*totSize:650)));
+		
+		vblList_detailPa = new DanaComVblDetailPa[totSize];
+		for(int i = 0; i < vir_list.size(); i++){
+			vblList_detailPa[i] = new DanaComVblDetailPa(danaComMain, (VirBillVo)vir_list.get(i));
+			vblListPa.add(vblList_detailPa[i]);
+		}
+		
+		vblListPa.revalidate();
+		vblListPa.repaint();
 	}
 
 }
