@@ -1,15 +1,15 @@
 package com.da.na;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
 
 public class DanaComVbjPa extends JPanel {
 	DanaComMain danaComMain;
@@ -17,11 +17,9 @@ public class DanaComVbjPa extends JPanel {
 	JPanel centerListPa, centerTopPa, centerBodyPa;
 	JLabel centerTitleJl;
 	
-	JTable vbbListTable;
-	JScrollPane vbbListJsp;
-	DefaultTableModel vbbListModel;
-	Vector vbbListRowData;
-	Vector<String> vbbListColumnNames;
+	JPanel vbjListPa, vbjListTopPa;
+	JScrollPane vbjListJsp;
+	JLabel vbjListTop01Jl, vbjListTop02Jl, vbjListTop03Jl, vbjListTop04Jl;
 	
 	public DanaComVbjPa() {
 	}
@@ -41,27 +39,46 @@ public class DanaComVbjPa extends JPanel {
 		centerListPa.add(centerTopPa);
 		
 		centerBodyPa = new JPanel();
-		centerBodyPa.setLayout(new BorderLayout());
+		centerBodyPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		vbbListRowData = new Vector<>(); 
-		vbbListColumnNames = new Vector<>(); 
-		vbbListColumnNames.add("베틀번호");
-		vbbListColumnNames.add("베틀명");
-		vbbListColumnNames.add("베틀시작일");
-		vbbListColumnNames.add("베틀마감일");
+		vbjListPa = new JPanel();
+		vbjListPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		vbjListPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbjListPa.setPreferredSize(new Dimension(890, 650));
+		vbjListJsp = new JScrollPane(vbjListPa, 
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		vbbListModel = new DefaultTableModel();
-		vbbListModel.setDataVector(vbbListRowData, vbbListColumnNames);
+		vbjListTopPa = new JPanel();
+		vbjListTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		vbbListTable = new JTable(vbbListModel);
-		vbbListJsp = new JScrollPane(vbbListTable);
+		vbjListTop01Jl = new JLabel("베틀번호");
+		vbjListTop01Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbjListTop01Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbjListTop01Jl.setPreferredSize(new Dimension(70, 30));
 		
-		vbbListTable.getColumn("베틀번호").setPreferredWidth(70);
-		vbbListTable.getColumn("베틀명").setPreferredWidth(600);
-		vbbListTable.getColumn("베틀시작일").setPreferredWidth(100);
-		vbbListTable.getColumn("베틀마감일").setPreferredWidth(100);
+		vbjListTop02Jl = new JLabel("베틀명");
+		vbjListTop02Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbjListTop02Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbjListTop02Jl.setPreferredSize(new Dimension(580, 30));
 		
-		centerBodyPa.add(vbbListJsp, BorderLayout.NORTH);
+		vbjListTop03Jl = new JLabel("베틀시작일");
+		vbjListTop03Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbjListTop03Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbjListTop03Jl.setPreferredSize(new Dimension(100, 30));
+		
+		vbjListTop04Jl = new JLabel("베틀마감일");
+		vbjListTop04Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbjListTop04Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbjListTop04Jl.setPreferredSize(new Dimension(100, 30));
+		
+		vbjListTopPa.add(vbjListTop01Jl);
+		vbjListTopPa.add(vbjListTop02Jl);
+		vbjListTopPa.add(vbjListTop03Jl);
+		vbjListTopPa.add(vbjListTop04Jl);
+		vbjListPa.add(vbjListTopPa);
+		
+		centerBodyPa.add(vbjListJsp, BorderLayout.NORTH);
 		centerListPa.add(centerBodyPa);
 		
 		add(centerListPa);

@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class DanaComVbbPa extends JPanel {
@@ -18,11 +20,9 @@ public class DanaComVbbPa extends JPanel {
 	JPanel centerListPa, centerTopPa, centerBodyPa;
 	JLabel centerTitleJl;
 	
-	JTable vbbListTable;
+	JPanel vbbListPa, vbbListTopPa;
 	JScrollPane vbbListJsp;
-	DefaultTableModel vbbListModel;
-	Vector vbbListRowData;
-	Vector<String> vbbListColumnNames;
+	JLabel vbbListTop01Jl, vbbListTop02Jl, vbbListTop03Jl, vbbListTop04Jl, vbbListTop05Jl, vbbListTop06Jl, vbbListTop07Jl;
 	
 	public DanaComVbbPa() {
 	}
@@ -43,36 +43,62 @@ public class DanaComVbbPa extends JPanel {
 		centerListPa.add(centerTopPa);
 		
 		centerBodyPa = new JPanel();
-		centerBodyPa.setLayout(new BorderLayout());
+		centerBodyPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		vbbListPa = new JPanel();
+		vbbListPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		vbbListPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListPa.setPreferredSize(new Dimension(950, 650));
+		vbbListJsp = new JScrollPane(vbbListPa, 
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		vbbListRowData = new Vector<>(); 
-		vbbListColumnNames = new Vector<>(); 
-		vbbListColumnNames.add("번호");
-		vbbListColumnNames.add("제목");
-		vbbListColumnNames.add("글쓴이");
-		vbbListColumnNames.add("날짜");
-		vbbListColumnNames.add("추천수");
-		vbbListColumnNames.add("조회수");
-		vbbListColumnNames.add("베틀등록");
+		vbbListTopPa = new JPanel();
+		vbbListTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		vbbListModel = new DefaultTableModel();
-		vbbListModel.setDataVector(vbbListRowData, vbbListColumnNames);
+		vbbListTop01Jl = new JLabel("번호");
+		vbbListTop01Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop01Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop01Jl.setPreferredSize(new Dimension(70, 30));
 		
-		vbbListTable = new JTable(vbbListModel);
-		vbbListJsp = new JScrollPane(vbbListTable);
+		vbbListTop02Jl = new JLabel("제목");
+		vbbListTop02Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop02Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop02Jl.setPreferredSize(new Dimension(430, 30));
 		
-		//DefaultTableCellRenderer celAlignCenter = new DefaultTableCellRenderer();
-		//celAlignCenter.setHorizontalAlignment(JLabel.CENTER);
-		//DefaultTableCellRenderer celAlignRight = new DefaultTableCellRenderer();
-		//celAlignRight.setHorizontalAlignment(JLabel.RIGHT);
+		vbbListTop03Jl = new JLabel("글쓴이");
+		vbbListTop03Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop03Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop03Jl.setPreferredSize(new Dimension(80, 30));
 		
-		vbbListTable.getColumn("번호").setPreferredWidth(70);
-		vbbListTable.getColumn("제목").setPreferredWidth(600);
-		vbbListTable.getColumn("글쓴이").setPreferredWidth(100);
-		vbbListTable.getColumn("날짜").setPreferredWidth(100);
-		vbbListTable.getColumn("추천수").setPreferredWidth(80);
-		vbbListTable.getColumn("조회수").setPreferredWidth(80);
-		vbbListTable.getColumn("베틀등록").setPreferredWidth(100);
+		vbbListTop04Jl = new JLabel("날짜");
+		vbbListTop04Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop04Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop04Jl.setPreferredSize(new Dimension(90, 30));
+		
+		vbbListTop05Jl = new JLabel("추천수");
+		vbbListTop05Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop05Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop05Jl.setPreferredSize(new Dimension(70, 30));
+		
+		vbbListTop06Jl = new JLabel("조회수");
+		vbbListTop06Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop06Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop06Jl.setPreferredSize(new Dimension(70, 30));
+		
+		vbbListTop07Jl = new JLabel("베틀등록");
+		vbbListTop07Jl.setHorizontalAlignment(JLabel.CENTER);
+		vbbListTop07Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListTop07Jl.setPreferredSize(new Dimension(80, 30));
+
+		vbbListTopPa.add(vbbListTop01Jl);
+		vbbListTopPa.add(vbbListTop02Jl);
+		vbbListTopPa.add(vbbListTop03Jl);
+		vbbListTopPa.add(vbbListTop04Jl);
+		vbbListTopPa.add(vbbListTop05Jl);
+		vbbListTopPa.add(vbbListTop06Jl);
+		vbbListTopPa.add(vbbListTop07Jl);
+		vbbListPa.add(vbbListTopPa);
 		
 		centerBodyPa.add(vbbListJsp, BorderLayout.NORTH);
 		centerListPa.add(centerBodyPa);

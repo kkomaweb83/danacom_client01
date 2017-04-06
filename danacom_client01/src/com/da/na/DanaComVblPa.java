@@ -5,28 +5,25 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
 
 public class DanaComVblPa extends JPanel {
 	DanaComMain danaComMain;
 	
 	JPanel centerListPa, centerTopPa, centerBodyPa;
 	JLabel centerTitleJl;
-	JButton vbbPreCreateJb;
+	JButton vblPreCreateJb;
 	
-	JTable vbbListTable;
-	JScrollPane vbbListJsp;
-	DefaultTableModel vbbListModel;
-	Vector vbbListRowData;
-	Vector<String> vbbListColumnNames;
+	JPanel vblListPa, vblListTopPa;
+	JScrollPane vblListJsp;
+	JLabel vblListTop01Jl, vblListTop02Jl, vblListTop03Jl, vblListTop04Jl;
 	
 	public DanaComVblPa() {
 	}
@@ -43,38 +40,57 @@ public class DanaComVblPa extends JPanel {
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerTitleJl = new JLabel("▶ 회원 견적서");
 		centerTitleJl.setPreferredSize(new Dimension(600, 25));
-		vbbPreCreateJb = new JButton("견적서등록");
+		vblPreCreateJb = new JButton("견적서등록");
 		centerTopPa.add(centerTitleJl);
-		centerTopPa.add(vbbPreCreateJb);
+		centerTopPa.add(vblPreCreateJb);
 		centerListPa.add(centerTopPa);
 		
 		centerBodyPa = new JPanel();
-		centerBodyPa.setLayout(new BorderLayout());
+		centerBodyPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		vbbListRowData = new Vector<>(); 
-		vbbListColumnNames = new Vector<>(); 
-		vbbListColumnNames.add("번호");
-		vbbListColumnNames.add("제목");
-		vbbListColumnNames.add("날짜");
-		vbbListColumnNames.add("공유여부");
+		vblListPa = new JPanel();
+		vblListPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		vblListPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vblListPa.setPreferredSize(new Dimension(890, 650));
+		vblListJsp = new JScrollPane(vblListPa, 
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		vbbListModel = new DefaultTableModel();
-		vbbListModel.setDataVector(vbbListRowData, vbbListColumnNames);
+		vblListTopPa = new JPanel();
+		vblListTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		vbbListTable = new JTable(vbbListModel);
-		vbbListJsp = new JScrollPane(vbbListTable);
+		vblListTop01Jl = new JLabel("번호");
+		vblListTop01Jl.setHorizontalAlignment(JLabel.CENTER);
+		vblListTop01Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vblListTop01Jl.setPreferredSize(new Dimension(70, 30));
 		
-		vbbListTable.getColumn("번호").setPreferredWidth(70);
-		vbbListTable.getColumn("제목").setPreferredWidth(600);
-		vbbListTable.getColumn("날짜").setPreferredWidth(100);
-		vbbListTable.getColumn("공유여부").setPreferredWidth(100);
+		vblListTop02Jl = new JLabel("제목");
+		vblListTop02Jl.setHorizontalAlignment(JLabel.CENTER);
+		vblListTop02Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vblListTop02Jl.setPreferredSize(new Dimension(580, 30));
 		
-		centerBodyPa.add(vbbListJsp, BorderLayout.NORTH);
+		vblListTop03Jl = new JLabel("날짜");
+		vblListTop03Jl.setHorizontalAlignment(JLabel.CENTER);
+		vblListTop03Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vblListTop03Jl.setPreferredSize(new Dimension(100, 30));
+		
+		vblListTop04Jl = new JLabel("공유여부");
+		vblListTop04Jl.setHorizontalAlignment(JLabel.CENTER);
+		vblListTop04Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vblListTop04Jl.setPreferredSize(new Dimension(100, 30));
+		
+		vblListTopPa.add(vblListTop01Jl);
+		vblListTopPa.add(vblListTop02Jl);
+		vblListTopPa.add(vblListTop03Jl);
+		vblListTopPa.add(vblListTop04Jl);
+		vblListPa.add(vblListTopPa);
+		
+		centerBodyPa.add(vblListJsp, BorderLayout.NORTH);
 		centerListPa.add(centerBodyPa);
 		
 		add(centerListPa);
 		
-		vbbPreCreateJb.addActionListener(new ActionListener() {
+		vblPreCreateJb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DanaComProtocol writePort = null;

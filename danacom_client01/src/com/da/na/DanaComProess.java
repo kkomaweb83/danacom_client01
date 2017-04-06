@@ -93,7 +93,7 @@ public class DanaComProess extends JPanel {
 		menuListPa.add(vblListLinkJb);
 		menuListPa.add(vbbListLinkJb);
 		menuListPa.add(btlListLinkJb);
-		menuListPa.add(vbbChatLinkJb);
+		//menuListPa.add(vbbChatLinkJb);
 		menuListPa.add(new JLabel(" "));
 		menuListPa.add(new JLabel(" "));
 		leftMenuPa.add(menuListPa);
