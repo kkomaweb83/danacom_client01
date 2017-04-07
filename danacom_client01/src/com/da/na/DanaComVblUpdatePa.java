@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -38,7 +39,7 @@ public class DanaComVblUpdatePa extends JPanel {
 	JLabel centerBodyRi01Jl, centerBodyLe01Jl, centerBodyLe01totJl;
 	JButton vbbCreate01Jb, vbbCreate02Jb, vbbCreate03Jb;
 	JTextField vbl_title_jt;
-	VirBillVo virBillVo = null;
+	VirBillVo virBillVo_u = null;
 	
 	public DanaComVblUpdatePa() {
 	}
@@ -166,13 +167,83 @@ public class DanaComVblUpdatePa extends JPanel {
 				}
 			}
 		});
+		
+		vbbCreate02Jb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if("".equals(vbl_title_jt.getText().trim())){
+					JOptionPane.showMessageDialog(getParent(), "견적서 제목을 입력하세요.");
+					return;
+				}
+				
+				if(centerBodyLeft2_1Pa == null || centerBodyLeft2_1Pa.length == 0){
+					JOptionPane.showMessageDialog(getParent(), "선택한 상품이 없습니다.");
+					return;
+				}
+				
+				List<VblDetVo> vdt_list = new ArrayList<>();
+				VirBillVo virBillVo = new VirBillVo();
+				virBillVo.setVbl_title(vbl_title_jt.getText().trim());
+				virBillVo.setVbl_mem_no(danaComMain.memVo.getMem_no());
+				virBillVo.setVbl_bor_answer(virBillVo_u.getVbl_bor_answer());
+				virBillVo.setVbl_no(virBillVo_u.getVbl_no());
+				
+				for(int i = 0; i < centerBodyLeft2_1Pa.length; i++){
+					if(centerBodyLeft2_1Pa[i].proVo_m != null){
+						VblDetVo vblDetVo = new VblDetVo();
+						vblDetVo.setVdt_quantity((int)centerBodyLeft2_1Pa[i].grade_sp.getValue());
+						vblDetVo.setVdt_pro_no(centerBodyLeft2_1Pa[i].proVo_m.getPro_no());
+						
+						vdt_list.add(vblDetVo);
+					}
+				}
+				if(vdt_list == null || vdt_list.size() < 1){
+					JOptionPane.showMessageDialog(getParent(), "선택한 상품이 없습니다.");
+					return;
+				}
+				
+				DanaComProtocol writePort = null;
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3052);
+					writePort.setVirBillVo(virBillVo);
+					writePort.setVdt_list(vdt_list);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				} 
+			}
+		});
+		
+		vbbCreate03Jb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				VirBillVo virBillVo = new VirBillVo();
+				virBillVo.setVbl_no(virBillVo_u.getVbl_no());
+				
+				DanaComProtocol writePort = null;
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3053);
+					writePort.setVirBillVo(virBillVo);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				} 
+			}
+		});
 	}
 	
 	public void setPclList(DanaComProtocol readPort){
 		centerBodyLeft2Pa.removeAll();
 		
-		virBillVo = readPort.getVirBillVo();
-		vbl_title_jt.setText(virBillVo.getVbl_title());
+		virBillVo_u = readPort.getVirBillVo();
+		vbl_title_jt.setText(virBillVo_u.getVbl_title());
 		List<ProClassVo> class_list = readPort.getClass_list();
 		centerBodyLe01totJl.setText(readPort.getTot_price() + " 원");
 		
@@ -277,6 +348,25 @@ public class DanaComVblUpdatePa extends JPanel {
 		centerBodyRight6Pa.revalidate();
 		centerBodyRight6Pa.repaint();
 		
+	}
+	public void setVblUpdate(DanaComProtocol readPort) {
+		JOptionPane.showMessageDialog(getParent(), readPort.getR_msg());
+		
+		DanaComProtocol writePort = null;
+		try{
+			writePort = new DanaComProtocol();
+			writePort.setP_cmd(3061);  // 회원 견적서 리스트 조회
+			writePort.setMemComVo(danaComMain.memVo);
+			
+			danaComMain.oos.writeObject(writePort);
+			danaComMain.oos.flush();
+			
+		} catch (Exception e1) {
+			System.out.println(e1);
+			e1.printStackTrace();
+		}
+		
+		danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVblPa.getParent(), "danaComVblPa");
 	}
 
 }
