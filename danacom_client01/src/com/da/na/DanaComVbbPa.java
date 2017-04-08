@@ -105,5 +105,8 @@ public class DanaComVbbPa extends JPanel {
 		
 		add(centerListPa);
 	}
+	public void setVbbList(DanaComProtocol readPort) {
+		
+	}
 
 }

@@ -254,6 +254,56 @@ public class DanaComVblUpdatePa extends JPanel {
 				} 
 			}
 		});
+		
+		vbbCreate01Jb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if("".equals(vbl_title_jt.getText().trim())){
+					JOptionPane.showMessageDialog(getParent(), "견적서 제목을 입력하세요.");
+					return;
+				}
+				
+				if(centerBodyLeft2_1Pa == null || centerBodyLeft2_1Pa.length == 0){
+					JOptionPane.showMessageDialog(getParent(), "선택한 상품이 없습니다.");
+					return;
+				}
+				
+				List<VblDetVo> vdt_list = new ArrayList<>();
+				VirBillVo virBillVo = new VirBillVo();
+				virBillVo.setVbl_title(vbl_title_jt.getText().trim());
+				virBillVo.setVbb_content(vbl_title_jt.getText().trim());
+				virBillVo.setVbl_mem_no(danaComMain.memVo.getMem_no());
+				virBillVo.setVbl_bor_answer("Y");
+				virBillVo.setVbl_no(virBillVo_u.getVbl_no());
+				
+				for(int i = 0; i < centerBodyLeft2_1Pa.length; i++){
+					if(centerBodyLeft2_1Pa[i].proVo_m != null){
+						VblDetVo vblDetVo = new VblDetVo();
+						vblDetVo.setVdt_quantity((int)centerBodyLeft2_1Pa[i].grade_sp.getValue());
+						vblDetVo.setVdt_pro_no(centerBodyLeft2_1Pa[i].proVo_m.getPro_no());
+						
+						vdt_list.add(vblDetVo);
+					}
+				}
+				if(vdt_list == null || vdt_list.size() < 1){
+					JOptionPane.showMessageDialog(getParent(), "선택한 상품이 없습니다.");
+					return;
+				}
+				
+				DanaComProtocol writePort = null;
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3080);
+					writePort.setVirBillVo(virBillVo);
+					writePort.setVdt_list(vdt_list);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				} 
+			}
+		});
 	}
 	
 	public void setPclList(DanaComProtocol readPort){
@@ -389,6 +439,26 @@ public class DanaComVblUpdatePa extends JPanel {
 		}
 		
 		danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVblPa.getParent(), "danaComVblPa");
+	}
+	public void setVbbInsert(DanaComProtocol readPort) {
+		JOptionPane.showMessageDialog(getParent(), readPort.getR_msg());
+		
+		DanaComProtocol writePort = null;
+		try{
+			writePort = new DanaComProtocol();
+			writePort.setP_cmd(3081);  // 공유 견적서 리스트 조회
+			writePort.setMemComVo(danaComMain.memVo);
+			
+			danaComMain.oos.writeObject(writePort);
+			danaComMain.oos.flush();
+			
+		} catch (Exception e1) {
+			System.out.println(e1);
+			e1.printStackTrace();
+		}
+		
+		danaComMain.danaComProess.centerCardLayout.show(danaComMain.danaComProess.danaComVbbPa.getParent(), "danaComVbbPa");
+		
 	}
 
 }

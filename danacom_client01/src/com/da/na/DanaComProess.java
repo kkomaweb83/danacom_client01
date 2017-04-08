@@ -183,6 +183,20 @@ public class DanaComProess extends JPanel {
 		vbbListLinkJb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				DanaComProtocol writePort = null;
+				try{
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3081);  // 공유 견적서 리스트 조회
+					writePort.setMemComVo(danaComMain.memVo);
+					
+					danaComMain.oos.writeObject(writePort);
+					danaComMain.oos.flush();
+					
+				} catch (Exception e1) {
+					System.out.println(e1);
+					e1.printStackTrace();
+				}
+				
 				centerCardLayout.show(danaComVbbPa.getParent(), "danaComVbbPa");
 			}
 		});
