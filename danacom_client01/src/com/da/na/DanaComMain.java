@@ -2,15 +2,19 @@ package com.da.na;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Enumeration;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 
 public class DanaComMain extends JFrame implements Runnable {
@@ -27,7 +31,9 @@ public class DanaComMain extends JFrame implements Runnable {
 	MemComVo memVo = null;
 	
 	public DanaComMain() {
-		setTitle("로그인");
+		setUIFont(new FontUIResource("Gulim", Font.PLAIN, 12));
+		
+		setTitle("다나컴(danacom)");
 		card = new CardLayout();
 		cards = new JPanel(card);
 		
@@ -155,6 +161,19 @@ public class DanaComMain extends JFrame implements Runnable {
 			System.out.println(e2);
 			e2.printStackTrace();
 		} 
+	}
+	
+	public void setUIFont(FontUIResource f) {
+		//UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Gulim", Font.PLAIN, 12));
+		
+	    Enumeration keys = UIManager.getDefaults().keys();
+	    while (keys.hasMoreElements()) {
+	        Object key = keys.nextElement();
+	        Object value = UIManager.get(key);
+	        if (value instanceof FontUIResource)
+	            UIManager.put(key, f);
+	    }
+	    UIManager.put("Button.font", new Font("돋움", Font.PLAIN, 13));
 	}
 	
 	public static void main(String[] args) {

@@ -5,15 +5,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -36,10 +39,12 @@ public class DanaComVblUpdatePa extends JPanel {
 	JPanel vbbProListPa;
 	JScrollPane vbbProListJsp, vbbPclListJsp;
 	JLabel centerTitleJl, centerTitleJl2;
-	JLabel centerBodyRi01Jl, centerBodyLe01Jl, centerBodyLe01totJl;
+	JLabel centerBodyRi01Jl, centerBodyLe01Jl, centerBodyLe01_1Jl, centerBodyLe01totJl;
 	JButton vbbCreate01Jb, vbbCreate02Jb, vbbCreate03Jb;
 	JTextField vbl_title_jt;
 	VirBillVo virBillVo_u = null;
+	JRadioButton pro_order_jb1, pro_order_jb2, pro_order_jb3;
+	ButtonGroup pro_order_gp;  
 	
 	public DanaComVblUpdatePa() {
 	}
@@ -107,7 +112,16 @@ public class DanaComVblUpdatePa extends JPanel {
 		centerBodyRight4Pa = new JPanel();
 		centerBodyRight4Pa.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		centerBodyRight4Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRight4Pa.add(new JLabel("신상품순 | 낮은가격순 | 높은가격순"));
+		pro_order_jb1 = new JRadioButton("신상품순");
+		pro_order_jb2 = new JRadioButton("낮은가격순");
+		pro_order_jb3 = new JRadioButton("높은가격순");
+		pro_order_gp = new ButtonGroup();
+		pro_order_gp.add(pro_order_jb1);
+		pro_order_gp.add(pro_order_jb2);
+		pro_order_gp.add(pro_order_jb3);
+		centerBodyRight4Pa.add(pro_order_jb1);
+		centerBodyRight4Pa.add(pro_order_jb2);
+		centerBodyRight4Pa.add(pro_order_jb3);
 		
 		centerBodyRight6Pa = new JPanel();
 		centerBodyRight6Pa.setPreferredSize(new Dimension(430, 450));
@@ -131,8 +145,11 @@ public class DanaComVblUpdatePa extends JPanel {
 		centerBodyLeft1Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyLeft1Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		centerBodyLe01Jl = new JLabel("총합");
+		centerBodyLe01_1Jl = new JLabel(" ");
+		centerBodyLe01_1Jl.setPreferredSize(new Dimension(300, 25));
 		centerBodyLe01totJl = new JLabel("");
 		centerBodyLeft1Pa.add(centerBodyLe01Jl);
+		centerBodyLeft1Pa.add(centerBodyLe01_1Jl);
 		centerBodyLeft1Pa.add(centerBodyLe01totJl);
 		
 		centerBodyLeft2Pa = new JPanel();
@@ -245,27 +262,32 @@ public class DanaComVblUpdatePa extends JPanel {
 		virBillVo_u = readPort.getVirBillVo();
 		vbl_title_jt.setText(virBillVo_u.getVbl_title());
 		List<ProClassVo> class_list = readPort.getClass_list();
-		centerBodyLe01totJl.setText(readPort.getTot_price() + " 원");
 		
-		int totSize = class_list.size();
+		DecimalFormat dc = new DecimalFormat("###,###,###,###");    
+        String price = dc.format(readPort.getTot_price());
+		centerBodyLe01totJl.setText(price + " 원");
+		
+		int totSize = 0;
 		for (int i = 0; i < class_list.size(); i++) {
 			totSize += ((class_list.get(i)).getPcl_list()).size();
 		}
-		centerBodyLeft2Pa.setPreferredSize(new Dimension(430, (85*totSize > 610?85*totSize:610)));
+		centerBodyLeft2Pa.setPreferredSize(new Dimension(430, (100*totSize > 610?100*totSize:610)));
 		
+		int k = 0;
+		centerBodyLeft2_1Pa = new DanaComVblRProPclPa[totSize];
 		for (int i = 0; i < class_list.size(); i++) {
 			ProClassVo vo = (ProClassVo)class_list.get(i);
 			JLabel tempjl = new JLabel(vo.getPcl_name());
 			tempjl.setPreferredSize(new Dimension(300, 25));
 			centerBodyLeft2Pa.add(tempjl);
 			List<ProClassVo> pcl_list = vo.getPcl_list();
-			centerBodyLeft2_1Pa = new DanaComVblRProPclPa[pcl_list.size()];
 			for (int j = 0; j < pcl_list.size(); j++) {
-				centerBodyLeft2_1Pa[j] = new DanaComVblRProPclPa(danaComMain, (ProClassVo)pcl_list.get(j), "update");
-				centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[j]);
+				centerBodyLeft2_1Pa[k] = new DanaComVblRProPclPa(danaComMain, (ProClassVo)pcl_list.get(j), "update");
+				centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[k]);
 				if((((ProClassVo)pcl_list.get(j)).getProVO()).getPro_no() != 0){
-					centerBodyLeft2_1Pa[j].setPclPro(((ProClassVo)pcl_list.get(j)).getProVO());
+					centerBodyLeft2_1Pa[k].setPclPro(((ProClassVo)pcl_list.get(j)).getProVO());
 				}
+				k++;
 			}
 		}
 		centerBodyLeft2Pa.revalidate();

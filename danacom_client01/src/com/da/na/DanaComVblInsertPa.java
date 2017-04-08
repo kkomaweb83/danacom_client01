@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -39,6 +41,8 @@ public class DanaComVblInsertPa extends JPanel {
 	JLabel centerBodyRi01Jl, centerBodyLe01Jl;
 	JButton vbbCreateJb;
 	JTextField vbl_title_jt;
+	JRadioButton pro_order_jb1, pro_order_jb2, pro_order_jb3;
+	ButtonGroup pro_order_gp;  
 
 	
 	public DanaComVblInsertPa() {
@@ -103,7 +107,16 @@ public class DanaComVblInsertPa extends JPanel {
 		centerBodyRight4Pa = new JPanel();
 		centerBodyRight4Pa.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		centerBodyRight4Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		centerBodyRight4Pa.add(new JLabel("신상품순 | 낮은가격순 | 높은가격순"));
+		pro_order_jb1 = new JRadioButton("신상품순");
+		pro_order_jb2 = new JRadioButton("낮은가격순");
+		pro_order_jb3 = new JRadioButton("높은가격순");
+		pro_order_gp = new ButtonGroup();
+		pro_order_gp.add(pro_order_jb1);
+		pro_order_gp.add(pro_order_jb2);
+		pro_order_gp.add(pro_order_jb3);
+		centerBodyRight4Pa.add(pro_order_jb1);
+		centerBodyRight4Pa.add(pro_order_jb2);
+		centerBodyRight4Pa.add(pro_order_jb3);
 		
 		centerBodyRight6Pa = new JPanel();
 		centerBodyRight6Pa.setPreferredSize(new Dimension(430, 450));
@@ -216,24 +229,28 @@ public class DanaComVblInsertPa extends JPanel {
 		
 		List<ProClassVo> class_list = readPort.getClass_list();
 		
-		int totSize = class_list.size();
+		int totSize = 0;
 		for (int i = 0; i < class_list.size(); i++) {
 			totSize += ((class_list.get(i)).getPcl_list()).size();
 		}
-		centerBodyLeft2Pa.setPreferredSize(new Dimension(430, (85*totSize > 610?85*totSize:610)));
+		centerBodyLeft2Pa.setPreferredSize(new Dimension(430, (100*totSize > 610?100*totSize:610)));
 		
+		int k = 0;
+		centerBodyLeft2_1Pa = new DanaComVblRProPclPa[totSize];
 		for (int i = 0; i < class_list.size(); i++) {
 			ProClassVo vo = (ProClassVo)class_list.get(i);
 			JLabel tempjl = new JLabel(vo.getPcl_name());
 			tempjl.setPreferredSize(new Dimension(300, 25));
 			centerBodyLeft2Pa.add(tempjl);
 			List<ProClassVo> pcl_list = vo.getPcl_list();
-			centerBodyLeft2_1Pa = new DanaComVblRProPclPa[pcl_list.size()];
+			
 			for (int j = 0; j < pcl_list.size(); j++) {
-				centerBodyLeft2_1Pa[j] = new DanaComVblRProPclPa(danaComMain, (ProClassVo)pcl_list.get(j), "insert");
-				centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[j]);
+				centerBodyLeft2_1Pa[k] = new DanaComVblRProPclPa(danaComMain, (ProClassVo)pcl_list.get(j), "insert");
+				centerBodyLeft2Pa.add(centerBodyLeft2_1Pa[k]);
+				k++;
 			}
 		}
+		
 		centerBodyLeft2Pa.revalidate();
 		centerBodyLeft2Pa.repaint();
 		

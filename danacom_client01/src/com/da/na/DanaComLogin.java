@@ -2,9 +2,12 @@ package com.da.na;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,10 +21,16 @@ import javax.swing.JTextField;
 public class DanaComLogin extends JPanel {
 	DanaComMain danaComMain;
 	
-	JPanel pg1, pg2, pg3, jp1, jp2, jp3;
+	JPanel pg1, pg2, jp1, jp2, jp3;
+	JPanel pg1_1Pa, pg1_2Pa;
 	JTextField t_mem_id;
 	JPasswordField t_mem_pass;
 	JButton jbMemComAdd, jbMemComLogin;
+	
+	Image main_ima01, main_ima02;
+	CanvasMain01 ct1 = new CanvasMain01();
+	CanvasMain02 ct2 = new CanvasMain02();
+	Toolkit toolkit = getToolkit();
 
 	
 	public DanaComLogin() {}
@@ -32,7 +41,22 @@ public class DanaComLogin extends JPanel {
 		this.danaComMain = danaComMain;
 		
 		pg1 = new JPanel();
-		pg1.add(new JLabel("로그인 창"));
+		pg1.setLayout(new BoxLayout(pg1, BoxLayout.Y_AXIS));
+		
+		pg1_1Pa = new JPanel();
+		ct1.setPreferredSize(new Dimension(244, 126));
+		URL imageURL = getClass().getClassLoader().getResource("dana_img/" + "danawa_logo_main_01.png");
+		main_ima01 = toolkit.getImage(imageURL);
+		pg1_1Pa.add(ct1);
+		
+		pg1_2Pa = new JPanel();
+		ct2.setPreferredSize(new Dimension(320, 120));
+		URL imageURL2 = getClass().getClassLoader().getResource("dana_img/" + "danawa_logo_main_02.png");
+		main_ima02 = toolkit.getImage(imageURL2);
+		pg1_2Pa.add(ct2);
+		
+		pg1.add(pg1_1Pa);
+		pg1.add(pg1_2Pa);
 		
 		pg2 = new JPanel();
 		pg2.setLayout(new BoxLayout(pg2, BoxLayout.Y_AXIS));
@@ -51,15 +75,14 @@ public class DanaComLogin extends JPanel {
 		jbMemComLogin = new JButton("로그인");
 		jp3.add(jbMemComAdd);
 		jp3.add(jbMemComLogin);
+		jp3.add(new JLabel(" "));
 		
 		pg2.add(jp1);
 		pg2.add(jp2);
 		pg2.add(jp3);
+		pg2.add(new JLabel(" "));
 		
-		pg3 = new JPanel();
-		
-		add(pg1, BorderLayout.NORTH);
-		add(pg3, BorderLayout.CENTER);
+		add(pg1, BorderLayout.CENTER);
 		add(pg2, BorderLayout.SOUTH);
 		
 		// 회원가입
@@ -137,6 +160,24 @@ public class DanaComLogin extends JPanel {
 			danaComMain.setBounds(20, 20, 1200, 750);
 			
 			danaComMain.card.show(getParent(), "danaComProess");
+		}
+	}
+	
+	private class CanvasMain01 extends JPanel {
+		@Override
+		public void paint(Graphics g) {
+			g.clearRect(0, 0, getWidth(), getHeight());
+			g.drawImage(main_ima01, 0, 0, 244, 126, this);
+			
+		}
+	}
+	
+	private class CanvasMain02 extends JPanel {
+		@Override
+		public void paint(Graphics g) {
+			g.clearRect(0, 0, getWidth(), getHeight());
+			g.drawImage(main_ima02, 0, 0, 320, 120, this);
+			
 		}
 	}
 }

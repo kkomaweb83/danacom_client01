@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -41,7 +42,8 @@ public class DanaComVblRProPa extends JPanel {
 		centerBodyRight6_1Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		centerBodyRight6_1Pa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		ct1.setPreferredSize(new Dimension(50, 50));
-		image1 = toolkit.getImage("C:/util/dana_img/"+proVo.getPmg_file());
+		URL imageURL = getClass().getClassLoader().getResource("dana_img/"+proVo.getPmg_file());
+		image1 = toolkit.getImage(imageURL);
 		centerBodyRight6_1Pa.add(ct1);
 		
 		centerBodyRight6_2Pa = new JPanel();
