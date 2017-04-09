@@ -3,6 +3,8 @@ package com.da.na;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -25,6 +27,8 @@ public class DanaComVbsPa extends JPanel {
 	JScrollPane vbbListJsp;
 	JLabel vbbListTop01Jl, vbbListTop02Jl, vbbListTop03Jl, vbbListTop04Jl, vbbListTop05Jl, vbbListTop06Jl, vbbListTop07Jl;
 	DanaComVbbProPa[] vbs_listPa;
+	
+	String vbb_no = "";
 
 	public DanaComVbsPa() {
 	}
@@ -120,6 +124,23 @@ public class DanaComVbsPa extends JPanel {
 		
 		add(centerListPa, BorderLayout.NORTH);
 		add(centerBodyPa, BorderLayout.CENTER);
+		
+		vbbRecommJb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DanaComProtocol writePort = null;
+				try {
+					writePort = new DanaComProtocol();
+					writePort.setP_cmd(3083);
+					writePort.setVbb_no(vbb_no);
+					
+					danaComMain.connWrite(writePort);
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				} 
+			}
+		});
 	}
 
 	public void setVbsList(DanaComProtocol readPort) {
@@ -137,6 +158,7 @@ public class DanaComVbsPa extends JPanel {
 		
 		vbbListTop00Pa.setPreferredSize(new Dimension(950, 90));
 		VbbVo vbbVo = readPort.getVbbVo();
+		vbb_no = vbbVo.getVbb_no();
 		vbbList_detailPa = new DanaComVbbDetailPa(danaComMain, vbbVo, "q");
 		vbbListTop00Pa.add(vbbList_detailPa);
 		vbbListTop00Pa.revalidate();
@@ -155,6 +177,25 @@ public class DanaComVbsPa extends JPanel {
 		vbbListPa.revalidate();
 		vbbListPa.repaint();
 		
+	}
+
+	public void setVbsRecomm(DanaComProtocol readPort) {
+		vbbListTop00Pa.removeAll();
+		
+		vbbListTopPa.add(vbbListTop02Jl);
+		vbbListTopPa.add(vbbListTop03Jl);
+		vbbListTopPa.add(vbbListTop04Jl);
+		vbbListTopPa.add(vbbListTop05Jl);
+		vbbListTopPa.add(vbbListTop06Jl);
+		vbbListTopPa.add(vbbListTop07Jl);
+		vbbListTop00Pa.add(vbbListTopPa);
+		
+		vbbListTop00Pa.setPreferredSize(new Dimension(950, 90));
+		VbbVo vbbVo = readPort.getVbbVo();
+		vbbList_detailPa = new DanaComVbbDetailPa(danaComMain, vbbVo, "q");
+		vbbListTop00Pa.add(vbbList_detailPa);
+		vbbListTop00Pa.revalidate();
+		vbbListTop00Pa.repaint();
 	}
 	
 }
