@@ -6,26 +6,29 @@ import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 
-public class DanaComVbbPa extends JPanel {
+public class DanaComVbsPa extends JPanel {
 	DanaComMain danaComMain;
 	
 	JPanel centerListPa, centerTopPa, centerBodyPa;
 	JLabel centerTitleJl;
+	JButton vbbRecommJb;
 	
-	JPanel vbbListPa, vbbListTopPa;
-	DanaComVbbDetailPa[] vbbList_detailPa;
+	JPanel vbbListPa, vbbListTopPa, vbbListTop00Pa;
+	DanaComVbbDetailPa vbbList_detailPa;
 	JScrollPane vbbListJsp;
 	JLabel vbbListTop01Jl, vbbListTop02Jl, vbbListTop03Jl, vbbListTop04Jl, vbbListTop05Jl, vbbListTop06Jl, vbbListTop07Jl;
-	
-	public DanaComVbbPa() {
+
+	public DanaComVbsPa() {
 	}
-	public DanaComVbbPa(DanaComMain danaComMain) {
+	
+	public DanaComVbsPa(DanaComMain danaComMain) {
 		this.danaComMain = danaComMain;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -36,21 +39,15 @@ public class DanaComVbbPa extends JPanel {
 		
 		centerTopPa = new JPanel();
 		centerTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		centerTitleJl = new JLabel("▶ 공유 견적서");
-		centerTitleJl.setPreferredSize(new Dimension(850, 25));
+		centerTitleJl = new JLabel("▶ 공유 견적서 - 상세");
+		centerTitleJl.setPreferredSize(new Dimension(600, 20));
+		vbbRecommJb = new JButton("견적서 추천");
 		centerTopPa.add(centerTitleJl);
+		centerTopPa.add(vbbRecommJb);
 		centerListPa.add(centerTopPa);
 		
-		centerBodyPa = new JPanel();
-		centerBodyPa.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		vbbListPa = new JPanel();
-		vbbListPa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		vbbListPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		vbbListPa.setPreferredSize(new Dimension(950, 650));
-		vbbListJsp = new JScrollPane(vbbListPa, 
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		vbbListTop00Pa = new JPanel();
+		vbbListTop00Pa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		vbbListTopPa = new JPanel();
 		vbbListTopPa.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -63,7 +60,7 @@ public class DanaComVbbPa extends JPanel {
 		vbbListTop02Jl = new JLabel("제목");
 		vbbListTop02Jl.setHorizontalAlignment(JLabel.CENTER);
 		vbbListTop02Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		vbbListTop02Jl.setPreferredSize(new Dimension(430, 30));
+		vbbListTop02Jl.setPreferredSize(new Dimension(500, 30));
 		
 		vbbListTop03Jl = new JLabel("글쓴이");
 		vbbListTop03Jl.setHorizontalAlignment(JLabel.CENTER);
@@ -90,45 +87,53 @@ public class DanaComVbbPa extends JPanel {
 		vbbListTop07Jl.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 		vbbListTop07Jl.setPreferredSize(new Dimension(80, 30));
 
-		vbbListTopPa.add(vbbListTop01Jl);
+		//vbbListTopPa.add(vbbListTop01Jl);
 		vbbListTopPa.add(vbbListTop02Jl);
 		vbbListTopPa.add(vbbListTop03Jl);
 		vbbListTopPa.add(vbbListTop04Jl);
 		vbbListTopPa.add(vbbListTop05Jl);
 		vbbListTopPa.add(vbbListTop06Jl);
 		vbbListTopPa.add(vbbListTop07Jl);
-		vbbListPa.add(vbbListTopPa);
+		
+		vbbListTop00Pa.add(vbbListTopPa);
+		centerListPa.add(vbbListTop00Pa);
+		
+		centerBodyPa = new JPanel();
+		centerBodyPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		vbbListPa = new JPanel();
+		vbbListPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		vbbListPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		vbbListPa.setPreferredSize(new Dimension(950, 530));
+		vbbListJsp = new JScrollPane(vbbListPa, 
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		centerBodyPa.add(vbbListJsp, BorderLayout.NORTH);
 		centerListPa.add(centerBodyPa);
 		
 		add(centerListPa);
 	}
-	public void setVbbList(DanaComProtocol readPort) {
-		vbbListPa.removeAll();
+
+	public void setVbsList(DanaComProtocol readPort) {
+		vbbListTop00Pa.removeAll();
 		
-		vbbListTopPa.add(vbbListTop01Jl);
+		//vbbListTopPa.add(vbbListTop01Jl);
 		vbbListTopPa.add(vbbListTop02Jl);
 		vbbListTopPa.add(vbbListTop03Jl);
 		vbbListTopPa.add(vbbListTop04Jl);
 		vbbListTopPa.add(vbbListTop05Jl);
 		vbbListTopPa.add(vbbListTop06Jl);
 		vbbListTopPa.add(vbbListTop07Jl);
-		vbbListPa.add(vbbListTopPa);
+		vbbListTop00Pa.add(vbbListTopPa);
 		
-		List<VbbVo> vbb_list = readPort.getVbb_list();
+		vbbListTop00Pa.setPreferredSize(new Dimension(950, 90));
+		VbbVo vbbVo = readPort.getVbbVo();
+		vbbList_detailPa = new DanaComVbbDetailPa(danaComMain, vbbVo, "q");
+		vbbListTop00Pa.add(vbbList_detailPa);
+		vbbListTop00Pa.revalidate();
+		vbbListTop00Pa.repaint();
 		
-		int totSize = vbb_list.size();
-		vbbListPa.setPreferredSize(new Dimension(950, (85*totSize > 650?85*totSize:650)));
-		
-		vbbList_detailPa = new DanaComVbbDetailPa[totSize];
-		for(int i = 0; i < vbb_list.size(); i++){
-			vbbList_detailPa[i] = new DanaComVbbDetailPa(danaComMain, (VbbVo)vbb_list.get(i), "g");
-			vbbListPa.add(vbbList_detailPa[i]);
-		}
-		
-		vbbListPa.revalidate();
-		vbbListPa.repaint();
 	}
-
+	
 }

@@ -343,6 +343,11 @@ public class DanaComVblUpdatePa extends JPanel {
 		centerBodyLeft2Pa.revalidate();
 		centerBodyLeft2Pa.repaint();
 		
+		vbbCreate01Jb.setEnabled(true);
+		if(virBillVo_u.getVbl_bor_answer().equals("Y")){
+			vbbCreate01Jb.setEnabled(false);
+		}
+		
 		DanaComProtocol writePort = null;
 		try {
 			writePort = new DanaComProtocol();
