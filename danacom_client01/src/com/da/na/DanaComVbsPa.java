@@ -16,7 +16,7 @@ import javax.swing.border.EtchedBorder;
 public class DanaComVbsPa extends JPanel {
 	DanaComMain danaComMain;
 	
-	JPanel centerListPa, centerTopPa, centerBodyPa;
+	JPanel centerListPa, centerTopPa, centerBodyPa, centerBodyRightPa;
 	JLabel centerTitleJl;
 	JButton vbbRecommJb;
 	
@@ -24,6 +24,7 @@ public class DanaComVbsPa extends JPanel {
 	DanaComVbbDetailPa vbbList_detailPa;
 	JScrollPane vbbListJsp;
 	JLabel vbbListTop01Jl, vbbListTop02Jl, vbbListTop03Jl, vbbListTop04Jl, vbbListTop05Jl, vbbListTop06Jl, vbbListTop07Jl;
+	DanaComVbbProPa[] vbs_listPa;
 
 	public DanaComVbsPa() {
 	}
@@ -31,9 +32,9 @@ public class DanaComVbsPa extends JPanel {
 	public DanaComVbsPa(DanaComMain danaComMain) {
 		this.danaComMain = danaComMain;
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BorderLayout());
 		
-		// 중간 리스트 영역
+		// 상단 리스트 영역
 		centerListPa = new JPanel();
 		centerListPa.setLayout(new BoxLayout(centerListPa, BoxLayout.Y_AXIS));
 		
@@ -97,26 +98,33 @@ public class DanaComVbsPa extends JPanel {
 		
 		vbbListTop00Pa.add(vbbListTopPa);
 		centerListPa.add(vbbListTop00Pa);
+		centerListPa.add(new JLabel(" "));
 		
+		// 중앙 리스트
 		centerBodyPa = new JPanel();
-		centerBodyPa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		centerBodyRightPa = new JPanel();
+		centerBodyRightPa.setLayout(new BoxLayout(centerBodyRightPa, BoxLayout.Y_AXIS));
+		centerBodyRightPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		centerBodyRightPa.setPreferredSize(new Dimension(900, 530));
 
 		vbbListPa = new JPanel();
 		vbbListPa.setLayout(new FlowLayout(FlowLayout.LEFT));
-		vbbListPa.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		vbbListPa.setPreferredSize(new Dimension(950, 530));
+		vbbListPa.setPreferredSize(new Dimension(890, 530));
 		vbbListJsp = new JScrollPane(vbbListPa, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		centerBodyPa.add(vbbListJsp, BorderLayout.NORTH);
-		centerListPa.add(centerBodyPa);
+		centerBodyRightPa.add(vbbListJsp);
+		centerBodyPa.add(centerBodyRightPa);
 		
-		add(centerListPa);
+		add(centerListPa, BorderLayout.NORTH);
+		add(centerBodyPa, BorderLayout.CENTER);
 	}
 
 	public void setVbsList(DanaComProtocol readPort) {
 		vbbListTop00Pa.removeAll();
+		vbbListPa.removeAll();
 		
 		//vbbListTopPa.add(vbbListTop01Jl);
 		vbbListTopPa.add(vbbListTop02Jl);
@@ -133,6 +141,19 @@ public class DanaComVbsPa extends JPanel {
 		vbbListTop00Pa.add(vbbList_detailPa);
 		vbbListTop00Pa.revalidate();
 		vbbListTop00Pa.repaint();
+		
+		List<VbsVo> vbs_list = readPort.getVbs_list();
+		
+		int totSize = vbs_list.size();
+		vbbListPa.setPreferredSize(new Dimension(890, (110*totSize > 530?110*totSize:530)));
+		
+		vbs_listPa = new DanaComVbbProPa[totSize];
+		for(int i = 0; i < vbs_list.size(); i++){
+			vbs_listPa[i] = new DanaComVbbProPa(danaComMain, (VbsVo)vbs_list.get(i));
+			vbbListPa.add(vbs_listPa[i]);
+		}
+		vbbListPa.revalidate();
+		vbbListPa.repaint();
 		
 	}
 	
