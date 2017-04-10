@@ -120,7 +120,7 @@ public class MemComJoin extends JFrame {
 					t_mem_id.requestFocus();
 				}else{
 					try {
-						s = new Socket("localhost", 8888);
+						s = new Socket("10.10.10.144", 8888);
 						oos = new ObjectOutputStream(s.getOutputStream());
 						
 						memComWriteVo = new MemComVo();
@@ -196,7 +196,7 @@ public class MemComJoin extends JFrame {
 							t_mem_name.requestFocus();
 						}else{
 							try {
-								s = new Socket("localhost", 8888);
+								s = new Socket("10.10.10.144", 8888);
 								oos = new ObjectOutputStream(s.getOutputStream());
 								
 								memComWriteVo = new MemComVo(0,u_mem_id,u_mem_pass,u_mem_name,u_mem_email,u_mem_hp,1000,"","n");

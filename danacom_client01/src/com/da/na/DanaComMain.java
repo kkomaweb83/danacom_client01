@@ -31,7 +31,7 @@ public class DanaComMain extends JFrame implements Runnable {
 	MemComVo memVo = null;
 	
 	public DanaComMain() {
-		setUIFont(new FontUIResource("Gulim", Font.PLAIN, 12));
+		//setUIFont(new FontUIResource("Gulim", Font.BOLD, 12));
 		
 		setTitle("다나컴(danacom)");
 		card = new CardLayout();
@@ -149,7 +149,7 @@ public class DanaComMain extends JFrame implements Runnable {
 	
 	public void conn(DanaComProtocol writePort){
 		try {
-			s = new Socket("localhost", 8888);
+			s = new Socket("10.10.10.144", 8888);
 			oos = new ObjectOutputStream(s.getOutputStream());
 			ois = new ObjectInputStream(s.getInputStream());
 						
@@ -185,7 +185,7 @@ public class DanaComMain extends JFrame implements Runnable {
 	        if (value instanceof FontUIResource)
 	            UIManager.put(key, f);
 	    }
-	    UIManager.put("Button.font", new Font("돋움", Font.PLAIN, 13));
+	    UIManager.put("Button.font", new Font("돋움", Font.BOLD, 13));
 	}
 	
 	public static void main(String[] args) {
